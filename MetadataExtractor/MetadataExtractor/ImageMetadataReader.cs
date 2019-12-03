@@ -1,0 +1,143 @@
+// Copyright (c) Drew Noakes and contributors. All Rights Reserved. Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System.Collections.Generic;
+using System.IO;
+using MetadataExtractor.Formats.Bmp;
+using MetadataExtractor.Formats.FileSystem;
+using MetadataExtractor.Formats.FileType;
+using MetadataExtractor.Formats.Gif;
+using MetadataExtractor.Formats.Ico;
+using MetadataExtractor.Formats.Jpeg;
+using MetadataExtractor.Formats.Netpbm;
+using MetadataExtractor.Formats.Pcx;
+using MetadataExtractor.Formats.Photoshop;
+using MetadataExtractor.Formats.Png;
+using MetadataExtractor.Formats.QuickTime;
+using MetadataExtractor.Formats.Raf;
+using MetadataExtractor.Formats.Tiff;
+using MetadataExtractor.Formats.WebP;
+using MetadataExtractor.Formats.Avi;
+using MetadataExtractor.Formats.Wav;
+using MetadataExtractor.Util;
+
+#if NET35
+using DirectoryList = System.Collections.Generic.IList<MetadataExtractor.Directory>;
+#else
+using DirectoryList = System.Collections.Generic.IReadOnlyList<MetadataExtractor.Directory>;
+#endif
+
+// ReSharper disable RedundantCaseLabel
+
+namespace MetadataExtractor
+{
+    /// <summary>Reads metadata from any supported file format.</summary>
+    /// <remarks>
+    /// This class a lightweight wrapper around other, specific metadata processors.
+    /// During extraction, the file type is determined from the first few bytes of the file.
+    /// Parsing is then delegated to one of:
+    ///
+    /// <list type="bullet">
+    ///   <item><see cref="JpegMetadataReader"/> for JPEG files</item>
+    ///   <item><see cref="TiffMetadataReader"/> for TIFF and (most) RAW files</item>
+    ///   <item><see cref="PsdMetadataReader"/> for Photoshop files</item>
+    ///   <item><see cref="PngMetadataReader"/> for PNG files</item>
+    ///   <item><see cref="BmpMetadataReader"/> for BMP files</item>
+    ///   <item><see cref="GifMetadataReader"/> for GIF files</item>
+    ///   <item><see cref="IcoMetadataReader"/> for ICO files</item>
+    ///   <item><see cref="NetpbmMetadataReader"/> for Netpbm files (PPM, PGM, PBM, PPM)</item>
+    ///   <item><see cref="PcxMetadataReader"/> for PCX files</item>
+    ///   <item><see cref="WebPMetadataReader"/> for WebP files</item>
+    ///   <item><see cref="RafMetadataReader"/> for RAF files</item>
+    ///   <item><see cref="QuickTimeMetadataReader"/> for QuickTime files</item>
+    /// </list>
+    ///
+    /// If you know the file type you're working with, you may use one of the above processors directly.
+    /// For most scenarios it is simpler, more convenient and more robust to use this class.
+    /// <para />
+    /// <see cref="FileTypeDetector"/> is used to determine the provided image's file type, and therefore
+    /// the appropriate metadata reader to use.
+    /// </remarks>
+    /// <author>Drew Noakes https://drewnoakes.com</author>
+    public static class ImageMetadataReader
+    {
+        /// <summary>Reads metadata from an <see cref="Stream"/>.</summary>
+        /// <param name="stream">A stream from which the file data may be read.  The stream must be positioned at the beginning of the file's data.</param>
+        /// <returns>A list of <see cref="Directory"/> instances containing the various types of metadata found within the file's data.</returns>
+        /// <exception cref="ImageProcessingException">The file type is unknown, or processing errors occurred.</exception>
+        /// <exception cref="System.IO.IOException"/>
+        public static DirectoryList ReadMetadata(Stream stream)
+        {
+            var fileType = FileTypeDetector.DetectFileType(stream);
+
+            var fileTypeDirectory = new FileTypeDirectory(fileType);
+            
+            switch (fileType)
+            {
+                case FileType.Jpeg:
+                    return Append(JpegMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+                case FileType.Tiff:
+                case FileType.Arw:
+                case FileType.Cr2:
+                case FileType.Nef:
+                case FileType.Orf:
+                case FileType.Rw2:
+                    return Append(TiffMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+                case FileType.Psd:
+                    return Append(PsdMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+                case FileType.Png:
+                    return Append(PngMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+                case FileType.Bmp:
+                    return Append(BmpMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+                case FileType.Gif:
+                    return Append(GifMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+                case FileType.Ico:
+                    return Append(IcoMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+                case FileType.Pcx:
+                    return new Directory[] { PcxMetadataReader.ReadMetadata(stream), fileTypeDirectory };
+                case FileType.WebP:
+                    return Append(WebPMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+                case FileType.Avi:
+                    return Append(AviMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+                case FileType.Wav:
+                    return Append(WavMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+                case FileType.Raf:
+                    return Append(RafMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+
+                case FileType.QuickTime:
+                    return Append(QuickTimeMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+
+                case FileType.Crx:
+                    //return Append(QuickTimeMetadataReader.ReadMetadata(stream), fileTypeDirectory);
+                case FileType.Netpbm:
+                    return new Directory[] { NetpbmMetadataReader.ReadMetadata(stream), fileTypeDirectory };
+                case FileType.Unknown:
+                    throw new ImageProcessingException("File format could not be determined");
+                case FileType.Riff:
+                case FileType.Crw:
+                default:
+                    throw new ImageProcessingException("File format is not supported");
+            }
+
+            static DirectoryList Append(IEnumerable<Directory> list, Directory directory) 
+                => new List<Directory>(list) { directory };
+        }
+
+        /// <summary>Reads metadata from a file.</summary>
+        /// <remarks>Unlike <see cref="ReadMetadata(System.IO.Stream)"/>, this overload includes a <see cref="FileMetadataDirectory"/> in the output.</remarks>
+        /// <param name="filePath">Location of a file from which data should be read.</param>
+        /// <returns>A list of <see cref="Directory"/> instances containing the various types of metadata found within the file's data.</returns>
+        /// <exception cref="ImageProcessingException">The file type is unknown, or processing errors occurred.</exception>
+        /// <exception cref="System.IO.IOException"/>
+        public static DirectoryList ReadMetadata(string filePath)
+        {
+            var directories = new List<Directory>();
+
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                directories.AddRange(ReadMetadata(stream));
+
+            directories.Add(new FileMetadataReader().Read(filePath));
+
+            return directories;
+        }
+    }
+}

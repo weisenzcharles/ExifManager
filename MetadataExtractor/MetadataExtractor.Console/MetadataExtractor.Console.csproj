@@ -1,0 +1,382 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Data\10x12x16bit-CMYK.psd" />
+    <None Remove="Data\16color-10x10.bmp" />
+    <None Remove="Data\24bpp-10x10.bmp" />
+    <None Remove="Data\256color-10x10.bmp" />
+    <None Remove="Data\8x4x8bit-Grayscale.psd" />
+    <None Remove="Data\adobeJpeg1.jpg" />
+    <None Remove="Data\adobeJpeg1.jpg.app0" />
+    <None Remove="Data\adobeJpeg1.jpg.app1.0" />
+    <None Remove="Data\adobeJpeg1.jpg.app1.1" />
+    <None Remove="Data\adobeJpeg1.jpg.app2" />
+    <None Remove="Data\adobeJpeg1.jpg.appd" />
+    <None Remove="Data\adobeJpeg1.jpg.appe" />
+    <None Remove="Data\crash01.jpg" />
+    <None Remove="Data\crash01.jpg.app1" />
+    <None Remove="Data\dotnet-256x256-alpha-palette.png" />
+    <None Remove="Data\gimp-8x12-greyscale-alpha-time-background.png" />
+    <None Remove="Data\iccDataInvalid1.jpg.app2" />
+    <None Remove="Data\invalid-iCCP-missing-adler32-checksum.png" />
+    <None Remove="Data\iptc-encoding-defined-utf8.bytes" />
+    <None Remove="Data\iptc-encoding-undefined-iso.bytes" />
+    <None Remove="Data\iptc-encoding-unknown-2.bytes" />
+    <None Remove="Data\iptc-encoding-unknown.bytes" />
+    <None Remove="Data\iptc1.jpg.appd" />
+    <None Remove="Data\iptc2-photoshop6.jpg.appd" />
+    <None Remove="Data\manuallyAddedThumbnail.jpg" />
+    <None Remove="Data\manuallyAddedThumbnail.jpg.app1" />
+    <None Remove="Data\manuallyAddedThumbnail.jpg.com" />
+    <None Remove="Data\mspaint-10x10.gif" />
+    <None Remove="Data\mspaint-8x10.png" />
+    <None Remove="Data\nikonMakernoteType1.jpg" />
+    <None Remove="Data\nikonMakernoteType1.jpg.app0" />
+    <None Remove="Data\nikonMakernoteType1.jpg.app1" />
+    <None Remove="Data\nikonMakernoteType1.jpg.appd" />
+    <None Remove="Data\nikonMakernoteType1.jpg.appe" />
+    <None Remove="Data\nikonMakernoteType2a.jpg.app1" />
+    <None Remove="Data\nikonMakernoteType2b.jpg" />
+    <None Remove="Data\nikonMakernoteType2b.jpg.app1" />
+    <None Remove="Data\nikonMakernoteType2b.jpg.appd" />
+    <None Remove="Data\noExif.jpg" />
+    <None Remove="Data\noExif.jpg.app0" />
+    <None Remove="Data\noExif.jpg.com" />
+    <None Remove="Data\photoshop-8x12-16colorpalette.png" />
+    <None Remove="Data\photoshop-8x12-32colors-alpha.gif" />
+    <None Remove="Data\photoshop-8x12-rgb24-all-metadata.png" />
+    <None Remove="Data\photoshop-8x12-rgb24-interlaced.png" />
+    <None Remove="Data\photoshop-8x12-rgb24.png" />
+    <None Remove="Data\photoshop-8x12-rgba32-interlaced.png" />
+    <None Remove="Data\photoshop-8x12-rgba32.png" />
+    <None Remove="Data\recursiveDirectories.jpg.app1" />
+    <None Remove="Data\repeatedOrientationTagWithDifferentValues.jpg.app1" />
+    <None Remove="Data\simple.jpg" />
+    <None Remove="Data\simple.jpg.app1" />
+    <None Remove="Data\simple.jpg.com" />
+    <None Remove="Data\simple.jpg.sof0" />
+    <None Remove="Data\sonyType1.jpg.app1" />
+    <None Remove="Data\sonyType6.jpg.app1.0" />
+    <None Remove="Data\sonyType6.jpg.app1.1" />
+    <None Remove="Data\sonyType6.jpg.app4.0" />
+    <None Remove="Data\sonyType6.jpg.app4.1" />
+    <None Remove="Data\windowsXpFields.jpg" />
+    <None Remove="Data\windowsXpFields.jpg.app0" />
+    <None Remove="Data\windowsXpFields.jpg.app1" />
+    <None Remove="Data\windowsXpFields.jpg.app2" />
+    <None Remove="Data\windowsXpFields.jpg.appd" />
+    <None Remove="Data\windowsXpFields.jpg.appe" />
+    <None Remove="Data\withExif.jpg" />
+    <None Remove="Data\withExif.jpg.app1" />
+    <None Remove="Data\withExif.jpg.appd" />
+    <None Remove="Data\withExifAndIptc.jpg" />
+    <None Remove="Data\withExifAndIptc.jpg.app0" />
+    <None Remove="Data\withExifAndIptc.jpg.app1.0" />
+    <None Remove="Data\withExifAndIptc.jpg.app1.1" />
+    <None Remove="Data\withExifAndIptc.jpg.app2" />
+    <None Remove="Data\withExifAndIptc.jpg.appd" />
+    <None Remove="Data\withExifAndIptc.jpg.appe" />
+    <None Remove="Data\withIptc.jpg" />
+    <None Remove="Data\withIptcExifGps.jpg" />
+    <None Remove="Data\withIptcPhotoshop6.jpg" />
+    <None Remove="Data\withPanasonicFaces.jpg" />
+    <None Remove="Data\withPanasonicFaces.jpg.app1" />
+    <None Remove="Data\withUncompressedRGBThumbnail.jpg" />
+    <None Remove="Data\withUncompressedRGBThumbnail.jpg.app1" />
+    <None Remove="Data\withUncompressedRGBThumbnail.jpg.com" />
+    <None Remove="Data\withUncompressedYCbCrThumbnail.jpg" />
+    <None Remove="Data\withUncompressedYCbCrThumbnail2.jpg" />
+    <None Remove="Data\withUncompressedYCbCrThumbnail3.jpg" />
+    <None Remove="Data\withUncompressedYCbCrThumbnail4.jpg" />
+    <None Remove="Data\withXmpAndIptc.jpg.app1.0" />
+    <None Remove="Data\withXmpAndIptc.jpg.app1.1" />
+    <None Remove="Data\withXmpAndIptc.jpg.app2" />
+    <None Remove="Data\withXmpAndIptc.jpg.appd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Data\10x12x16bit-CMYK.psd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\16color-10x10.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\24bpp-10x10.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\256color-10x10.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\8x4x8bit-Grayscale.psd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\adobeJpeg1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\adobeJpeg1.jpg.app0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\adobeJpeg1.jpg.app1.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\adobeJpeg1.jpg.app1.1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\adobeJpeg1.jpg.app2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\adobeJpeg1.jpg.appd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\adobeJpeg1.jpg.appe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\crash01.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\crash01.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\dotnet-256x256-alpha-palette.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\gimp-8x12-greyscale-alpha-time-background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\iccDataInvalid1.jpg.app2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\invalid-iCCP-missing-adler32-checksum.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\iptc-encoding-defined-utf8.bytes">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\iptc-encoding-undefined-iso.bytes">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\iptc-encoding-unknown-2.bytes">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\iptc-encoding-unknown.bytes">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\iptc1.jpg.appd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\iptc2-photoshop6.jpg.appd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\manuallyAddedThumbnail.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\manuallyAddedThumbnail.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\manuallyAddedThumbnail.jpg.com">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\mspaint-10x10.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\mspaint-8x10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\nikonMakernoteType1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\nikonMakernoteType1.jpg.app0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\nikonMakernoteType1.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\nikonMakernoteType1.jpg.appd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\nikonMakernoteType1.jpg.appe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\nikonMakernoteType2a.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\nikonMakernoteType2b.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\nikonMakernoteType2b.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\nikonMakernoteType2b.jpg.appd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\noExif.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\noExif.jpg.app0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\noExif.jpg.com">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\photoshop-8x12-16colorpalette.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\photoshop-8x12-32colors-alpha.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\photoshop-8x12-rgb24-all-metadata.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\photoshop-8x12-rgb24-interlaced.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\photoshop-8x12-rgb24.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\photoshop-8x12-rgba32-interlaced.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\photoshop-8x12-rgba32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\recursiveDirectories.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\repeatedOrientationTagWithDifferentValues.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\simple.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\simple.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\simple.jpg.com">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\simple.jpg.sof0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\sonyType1.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\sonyType6.jpg.app1.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\sonyType6.jpg.app1.1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\sonyType6.jpg.app4.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\sonyType6.jpg.app4.1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\windowsXpFields.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\windowsXpFields.jpg.app0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\windowsXpFields.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\windowsXpFields.jpg.app2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\windowsXpFields.jpg.appd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\windowsXpFields.jpg.appe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withExif.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withExif.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withExif.jpg.appd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withExifAndIptc.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withExifAndIptc.jpg.app0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withExifAndIptc.jpg.app1.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withExifAndIptc.jpg.app1.1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withExifAndIptc.jpg.app2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withExifAndIptc.jpg.appd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withExifAndIptc.jpg.appe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withIptc.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withIptcExifGps.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withIptcPhotoshop6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withPanasonicFaces.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withPanasonicFaces.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withUncompressedRGBThumbnail.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withUncompressedRGBThumbnail.jpg.app1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withUncompressedRGBThumbnail.jpg.com">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withUncompressedYCbCrThumbnail.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withUncompressedYCbCrThumbnail2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withUncompressedYCbCrThumbnail3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withUncompressedYCbCrThumbnail4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withXmpAndIptc.jpg.app1.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withXmpAndIptc.jpg.app1.1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withXmpAndIptc.jpg.app2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\withXmpAndIptc.jpg.appd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MetadataExtractor\MetadataExtractor.csproj" />
+  </ItemGroup>
+
+</Project>
