@@ -59,5 +59,24 @@ namespace MagicFile.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   查找类似 MagicFile 的本地化字符串。
+        /// </summary>
+        internal static string AppName {
+            get {
+                return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Icon magicfile {
+            get {
+                object obj = ResourceManager.GetObject("magicfile", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

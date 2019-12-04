@@ -6,6 +6,9 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>Resources\exif.ico</ApplicationIcon>
+    <Authors>Charles Zhang</Authors>
+    <Company>Weisenz Team</Company>
+    <Copyright>Copyright © 2018-2019 Weisenz Team. All Rights Reserved</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

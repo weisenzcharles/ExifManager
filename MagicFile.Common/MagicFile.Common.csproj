@@ -1,14 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyName>MagicFile</AssemblyName>
+    <Description>MagicFile common class library.</Description>
+    <TargetFrameworks>netstandard1.3;netstandard2.0;net35;net45;net46;net47</TargetFrameworks>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Charles Zhang</Authors>
     <Company>Weisenz Team</Company>
     <Copyright>Copyright © 2018-2019 Weisenz Team. All Rights Reserved</Copyright>
-    <ApplicationIcon />
-    <StartupObject />
   </PropertyGroup>
 
 </Project>
