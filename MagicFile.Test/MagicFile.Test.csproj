@@ -6,7 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SharpKml.Core" Version="5.1.0" />
+    <None Remove="Data\20191114.kml" />
+    <None Remove="Data\20191118_092807_4133.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\20191114.kml" />
+    <EmbeddedResource Include="Data\20191118_092807_4133.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExifLibrary\ExifLibrary\ExifLibrary.csproj" />
+    <ProjectReference Include="..\SharpKml\SharpKml\SharpKml.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,7 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Reflection;
+using ExifLibrary;
 namespace MagicFile.Test
 {
     class Program
@@ -16,7 +17,9 @@ namespace MagicFile.Test
         private static readonly List<DateTime> when = new List<DateTime>();
         static void Main(string[] args)
         {
-
+            Directory.CreateDirectory("Data/files"); // Need the sub-directory for the Kmz test
+            CopyResource("MagicFile.Test.Data.20191114.kml", "Data/20191114.kml");
+            CopyResource("MagicFile.Test.Data.20191118_092807_4133.jpg", "Data/20191118_092807_4133.jpg");
             KmlFile file = OpenFile("Enter a file to show the placemarks of:");
             if (file == null)
             {
@@ -39,6 +42,9 @@ namespace MagicFile.Test
                     when.AddRange(track.When.ToList());
                 }
             }
+            var imageFile = ImageFile.FromFile(GetInputFile("", "Data/20191118_092807_4133.jpg"));
+            // note the explicit cast to ushort
+            imageFile.Properties.Set(ExifTag.ISOSpeedRatings, (ushort)200);
 
             Console.WriteLine("Hello World!");
         }
@@ -67,6 +73,14 @@ namespace MagicFile.Test
                 return null;
             }
             return file;
+        }
+
+        private static void CopyResource(string name, string destination)
+        {
+            var resources = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+            using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name);
+            using FileStream file = File.OpenWrite(destination);
+            stream.CopyTo(file);
         }
 
         public static string GetInputFile(string prompt, string defaultFile)
