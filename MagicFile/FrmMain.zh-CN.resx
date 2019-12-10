@@ -137,4 +137,97 @@
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;menuStripMain.Name" xml:space="preserve">
+    <value>menuStripMain</value>
+  </data>
+  <data name="&gt;&gt;menuStripMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;menuStripMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuStripMain.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;statusStripMain.Name" xml:space="preserve">
+    <value>statusStripMain</value>
+  </data>
+  <data name="&gt;&gt;statusStripMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;statusStripMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;statusStripMain.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemEdit.Name" xml:space="preserve">
+    <value>toolStripMenuItemEdit</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemEdit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemFile.Name" xml:space="preserve">
+    <value>toolStripMenuItemFile</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemHelp.Name" xml:space="preserve">
+    <value>toolStripMenuItemHelp</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemHelp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemLanguage.Name" xml:space="preserve">
+    <value>toolStripMenuItemLanguage</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemLanguage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemProset.Name" xml:space="preserve">
+    <value>toolStripMenuItemProset</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemProset.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemSetting.Name" xml:space="preserve">
+    <value>toolStripMenuItemSetting</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemSetting.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemUndo.Name" xml:space="preserve">
+    <value>toolStripMenuItemUndo</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemUndo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="menuStripMain.Text" xml:space="preserve">
+    <value>menuStripMain</value>
+  </data>
+  <data name="statusStripMain.Text" xml:space="preserve">
+    <value>statusStripMain</value>
+  </data>
+  <data name="toolStripMenuItemEdit.Text" xml:space="preserve">
+    <value>编辑(&amp;E)</value>
+  </data>
+  <data name="toolStripMenuItemFile.Text" xml:space="preserve">
+    <value>文件(&amp;F)</value>
+  </data>
+  <data name="toolStripMenuItemHelp.Text" xml:space="preserve">
+    <value>帮助(&amp;H)</value>
+  </data>
+  <data name="toolStripMenuItemLanguage.Text" xml:space="preserve">
+    <value>语言(&amp;L)</value>
+  </data>
+  <data name="toolStripMenuItemProset.Text" xml:space="preserve">
+    <value>预设(&amp;P)</value>
+  </data>
+  <data name="toolStripMenuItemSetting.Text" xml:space="preserve">
+    <value>设置(&amp;S)</value>
+  </data>
+  <data name="toolStripMenuItemUndo.Text" xml:space="preserve">
+    <value>撤销(&amp;U)</value>
+  </data>
 </root>

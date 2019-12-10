@@ -13,7 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicFile.Console", "MagicF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetadataExtractor.Resources", "MetadataExtractor\MetadataExtractor.Resources\MetadataExtractor.Resources.csproj", "{0611EF90-F263-43F5-84AE-67B71C9C030C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicFile.Common", "MagicFile.Common\MagicFile.Common.csproj", "{2BB0F565-E7A6-4B43-B981-9C317E2CC0C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicFile.Common", "MagicFile.Common\MagicFile.Common.csproj", "{2BB0F565-E7A6-4B43-B981-9C317E2CC0C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicFile.Test", "MagicFile.Test\MagicFile.Test.csproj", "{C173339B-4E98-4312-A3D0-1963798A6156}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExifLibrary", "ExifLibrary\ExifLibrary\ExifLibrary.csproj", "{DC801588-587C-4B90-ABBD-A5107C451B98}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{7FE079F9-59E8-4D1D-9CB4-7EF7B7360F1D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpKml.Core", "SharpKml\SharpKml\SharpKml.Core.csproj", "{6FD9226F-11ED-490B-93A7-069D9325E741}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +53,27 @@ Global
 		{2BB0F565-E7A6-4B43-B981-9C317E2CC0C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BB0F565-E7A6-4B43-B981-9C317E2CC0C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BB0F565-E7A6-4B43-B981-9C317E2CC0C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C173339B-4E98-4312-A3D0-1963798A6156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C173339B-4E98-4312-A3D0-1963798A6156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C173339B-4E98-4312-A3D0-1963798A6156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C173339B-4E98-4312-A3D0-1963798A6156}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC801588-587C-4B90-ABBD-A5107C451B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC801588-587C-4B90-ABBD-A5107C451B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC801588-587C-4B90-ABBD-A5107C451B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC801588-587C-4B90-ABBD-A5107C451B98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FD9226F-11ED-490B-93A7-069D9325E741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FD9226F-11ED-490B-93A7-069D9325E741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FD9226F-11ED-490B-93A7-069D9325E741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FD9226F-11ED-490B-93A7-069D9325E741}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3B390380-318A-4C74-860C-856155939673} = {7FE079F9-59E8-4D1D-9CB4-7EF7B7360F1D}
+		{0611EF90-F263-43F5-84AE-67B71C9C030C} = {7FE079F9-59E8-4D1D-9CB4-7EF7B7360F1D}
+		{DC801588-587C-4B90-ABBD-A5107C451B98} = {7FE079F9-59E8-4D1D-9CB4-7EF7B7360F1D}
+		{6FD9226F-11ED-490B-93A7-069D9325E741} = {7FE079F9-59E8-4D1D-9CB4-7EF7B7360F1D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EC8D3F05-B541-403E-BD0D-71E798A491E3}

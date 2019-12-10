@@ -62,6 +62,9 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -87,11 +90,23 @@
     <Compile Include="Dialogs\BaseBox.Designer.cs">
       <DependentUpon>BaseBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\FilterBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\FilterBox.Designer.cs">
+      <DependentUpon>FilterBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\PresetBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Dialogs\PresetBox.Designer.cs">
       <DependentUpon>PresetBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\RulesBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\RulesBox.Designer.cs">
+      <DependentUpon>RulesBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\SettingBox.cs">
       <SubType>Form</SubType>
@@ -148,6 +163,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="MagicFile.snk" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -405,6 +421,7 @@
     <Content Include="Resources\Languages\Icons\zm.png" />
     <Content Include="Resources\Languages\Icons\zw.png" />
     <Content Include="Resources\magicfile.ico" />
+    <Content Include="Resources\Icon\ok.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.2">

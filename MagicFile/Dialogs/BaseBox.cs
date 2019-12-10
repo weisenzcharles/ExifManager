@@ -15,6 +15,7 @@ namespace MagicFile.Dialogs
         public BaseBox()
         {
             InitializeComponent();
+            Text = Name;
         }
     }
 }
