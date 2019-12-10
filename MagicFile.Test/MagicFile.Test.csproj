@@ -7,11 +7,13 @@
 
   <ItemGroup>
     <None Remove="Data\20191114.kml" />
+    <None Remove="Data\20191117_085933_6304.jpg" />
     <None Remove="Data\20191118_092807_4133.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Data\20191114.kml" />
+    <EmbeddedResource Include="Data\20191117_085933_6304.jpg" />
     <EmbeddedResource Include="Data\20191118_092807_4133.jpg" />
   </ItemGroup>
 

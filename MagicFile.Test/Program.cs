@@ -19,7 +19,8 @@ namespace MagicFile.Test
         {
             Directory.CreateDirectory("Data/files"); // Need the sub-directory for the Kmz test
             CopyResource("MagicFile.Test.Data.20191114.kml", "Data/20191114.kml");
-            CopyResource("MagicFile.Test.Data.20191118_092807_4133.jpg", "Data/20191118_092807_4133.jpg");
+            CopyResource("MagicFile.Test.Data.20191118_092807_4133.jpg", "Data/20191118_092807_4133.jpg");   
+            CopyResource("MagicFile.Test.Data.20191117_085933_6304.jpg", "Data/20191117_085933_6304.jpg");
             KmlFile file = OpenFile("Enter a file to show the placemarks of:");
             if (file == null)
             {
@@ -42,9 +43,14 @@ namespace MagicFile.Test
                     when.AddRange(track.When.ToList());
                 }
             }
-            var imageFile = ImageFile.FromFile(GetInputFile("", "Data/20191118_092807_4133.jpg"));
+            var imageFile = ImageFile.FromFile(GetInputFile("", "Data/20191117_085933_6304.jpg"));
+            var latTag = imageFile.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSLatitude);
+            var longTag = imageFile.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSLongitude);
+            var altTag = imageFile.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSAltitude);
             // note the explicit cast to ushort
             imageFile.Properties.Set(ExifTag.ISOSpeedRatings, (ushort)200);
+            //imageFile.Properties.Set(ExifTag.ISOSpeedRatings, (ushort)200);
+            //imageFile.Properties.Set(ExifTag.GPSLongitude, (ushort)200);
 
             Console.WriteLine("Hello World!");
         }
