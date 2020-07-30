@@ -8,6 +8,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using ExifLibrary;
+using System.Reflection.Metadata.Ecma335;
+using MetadataExtractor;
+
 namespace MagicFile.Test
 {
     class Program
@@ -17,43 +20,57 @@ namespace MagicFile.Test
         private static readonly List<DateTime> when = new List<DateTime>();
         static void Main(string[] args)
         {
-            Directory.CreateDirectory("Data/files"); // Need the sub-directory for the Kmz test
+            System.IO.Directory.CreateDirectory("Data/files"); // Need the sub-directory for the Kmz test
             CopyResource("MagicFile.Test.Data.20191114.kml", "Data/20191114.kml");
-            CopyResource("MagicFile.Test.Data.20191118_092807_4133.jpg", "Data/20191118_092807_4133.jpg");   
+            CopyResource("MagicFile.Test.Data.20191118_092807_4133.jpg", "Data/20191118_092807_4133.jpg");
             CopyResource("MagicFile.Test.Data.20191117_085933_6304.jpg", "Data/20191117_085933_6304.jpg");
-            KmlFile file = OpenFile("Enter a file to show the placemarks of:");
-            if (file == null)
-            {
-                return;
-            }
-            if (file.Root is Kml kml)
-            {
-                var placemarks = new List<Placemark>();
-                ExtractPlacemarks(kml.Feature, placemarks);
+            CopyResource("MagicFile.Test.Data.DSC05338.ARW", "Data/DSC05338.ARW");
+            //KmlFile file = OpenFile("Enter a file to show the placemarks of:");
+            //if (file == null)
+            //{
+            //    return;
+            //}
+            //if (file.Root is Kml kml)
+            //{
+            //    var placemarks = new List<Placemark>();
+            //    ExtractPlacemarks(kml.Feature, placemarks);
 
-                // Sort using their names
-                placemarks.Sort((a, b) => string.Compare(a.Name, b.Name));
+            //    // Sort using their names
+            //    placemarks.Sort((a, b) => string.Compare(a.Name, b.Name));
 
-                // Display the results
-                foreach (Placemark placemark in placemarks)
-                {
-                    Geometry geometry = placemark.Geometry;
-                    var track = geometry as Track;
-                    coordinates.AddRange(track.Coordinates.ToList());
-                    when.AddRange(track.When.ToList());
-                }
-            }
-            var imageFile = ImageFile.FromFile(GetInputFile("", "Data/20191117_085933_6304.jpg"));
-            var latTag = imageFile.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSLatitude);
-            var longTag = imageFile.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSLongitude);
-            var altTag = imageFile.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSAltitude);
-            // note the explicit cast to ushort
-            imageFile.Properties.Set(ExifTag.ISOSpeedRatings, (ushort)200);
+            //    // Display the results
+            //    foreach (Placemark placemark in placemarks)
+            //    {
+            //        Geometry geometry = placemark.Geometry;
+            //        var track = geometry as Track;
+            //        coordinates.AddRange(track.Coordinates.ToList());
+            //        when.AddRange(track.When.ToList());
+            //    }
+            //}
+
+            MetadataTest();
+            //var imageFile = ImageFile.FromFile(GetInputFile("", "Data/DSC05338.ARW"));
+            //var latTag = imageFile.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSLatitude);
+            //var longTag = imageFile.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSLongitude);
+            //var altTag = imageFile.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSAltitude);
+            //// note the explicit cast to ushort
             //imageFile.Properties.Set(ExifTag.ISOSpeedRatings, (ushort)200);
-            //imageFile.Properties.Set(ExifTag.GPSLongitude, (ushort)200);
+            ////imageFile.Properties.Set(ExifTag.ISOSpeedRatings, (ushort)200);
+            ////imageFile.Properties.Set(ExifTag.GPSLongitude, (ushort)200);
 
             Console.WriteLine("Hello World!");
         }
+
+
+
+        private static void MetadataTest()
+        {
+            IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata("Data/DSC05338.ARW");
+            foreach (var directory in directories)
+                foreach (var tag in directory.Tags)
+                    Console.WriteLine($"{directory.Name} - {tag.Name} = {tag.Description}");
+        }
+
 
         public static KmlFile OpenFile(string prompt)
         {
