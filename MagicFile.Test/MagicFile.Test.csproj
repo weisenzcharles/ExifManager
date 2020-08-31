@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="z440.atl.core" Version="3.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ExifLibrary\ExifLibrary\ExifLibrary.csproj" />
     <ProjectReference Include="..\MetadataExtractor\MetadataExtractor\MetadataExtractor.csproj" />
     <ProjectReference Include="..\SharpKml\SharpKml\SharpKml.Core.csproj" />
