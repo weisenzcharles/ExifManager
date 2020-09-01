@@ -13,79 +13,92 @@ namespace ATLTest
     {
         static void Main(string[] args)
         {
-            //string rootPath = @"\\192.168.0.199\home\music";
-            //string artistDirectory = @"\\192.168.0.199\home\music\music";
-            //Directory.CreateDirectory(artistDirectory); // Need the sub-directory for the Kmz test
-            //                                            //CopyResource("MagicFile.Test.Data.Akon - Right Now「Na Na Na」.flac", "Data/Akon - Right Now「Na Na Na」.flac");
-            //                                            //CopyResource("MagicFile.Test.Data.Alex Goot - Catch My Breath.mp3", "Data/Alex Goot - Catch My Breath.mp3");
-            //var files = Directory.GetFiles(rootPath);
+
+            #region 文件管理...
 
 
-            //foreach (string file in files)
-            //{
-            //    Track theTrack = new Track(file);
-            //    if (theTrack.Title.IndexOf('(') > 0 || theTrack.Album.IndexOf('(') > 0 || theTrack.Artist.IndexOf('(') > 0 || theTrack.Title.IndexOf(')') > 0 || theTrack.Album.IndexOf(')') > 0 || theTrack.Artist.IndexOf(')') > 0)
-            //    {
-            //        theTrack.Title = theTrack.Title.Replace(" (", "「").Replace("(", "「").Replace(")", "」");
-            //        theTrack.Album = theTrack.Album.Replace(" (", "「").Replace("(", "「").Replace(")", "」");
-            //        theTrack.Artist = theTrack.Artist.Replace(" (", "「").Replace("(", "「").Replace(")", "」");
-            //        theTrack.Save();
-            //    }
+            string rootPath = @"\\192.168.0.199\home\Test";
+            string artistDirectory = @"\\192.168.0.199\home\Test\music";
+            Directory.CreateDirectory(artistDirectory);
+            // Need the sub-directory for the Kmz test
+            //CopyResource("MagicFile.Test.Data.Akon - Right Now「Na Na Na」.flac", "Data/Akon - Right Now「Na Na Na」.flac");
+            //CopyResource("MagicFile.Test.Data.Alex Goot - Catch My Breath.mp3", "Data/Alex Goot - Catch My Breath.mp3");
+            var files = Directory.GetFiles(rootPath);
 
-            //    string artistPath = string.Format(@"{0}\{1}", artistDirectory, theTrack.Artist);
-            //    string albumPath = string.Format(@"{0}\{1}\{2}", artistDirectory, theTrack.Artist, theTrack.Album);
-            //    if (!Directory.Exists(artistPath))
-            //    {
-            //        Directory.CreateDirectory(artistPath);
-            //    }
-            //    if (!Directory.Exists(albumPath))
-            //    {
-            //        Directory.CreateDirectory(albumPath);
-            //    }
-            //    var destFileName = albumPath + "\\" + Path.GetFileName(file);
-            //    CopyFile(file, destFileName);
 
-            //    Console.WriteLine("Title : " + theTrack.Title);
-            //    Console.WriteLine("Album : " + theTrack.Album);
-            //    Console.WriteLine("Artist : " + theTrack.Artist);
-            //    Console.WriteLine("Description : " + theTrack.Description);
-            //    Console.WriteLine("Duration (ms) : " + theTrack.DurationMs);
-            //    //Console.WriteLine();
-            //}
+            foreach (string file in files)
+            {
+                Console.WriteLine("File : " + file);
+                Track theTrack = new Track(file);
+                if (theTrack != null && !string.IsNullOrEmpty(theTrack.Title))
+                {
+                    //if (theTrack.Title.IndexOf('(') > 0 || theTrack.Album.IndexOf('(') > 0 || theTrack.Artist.IndexOf('(') > 0 || theTrack.Title.IndexOf(')') > 0 || theTrack.Album.IndexOf(')') > 0 || theTrack.Artist.IndexOf(')') > 0)
+                    //{
+                    theTrack.Title = ReplaceFormat(theTrack.Title);
+                    theTrack.Album = ReplaceFormat(theTrack.Album);
+                    theTrack.Artist = ReplaceFormat(theTrack.Artist);
+                    theTrack.Save();
+                    //}
+
+                    string artistPath = string.Format(@"{0}\{1}", artistDirectory, theTrack.Artist);
+                    string albumPath = string.Format(@"{0}\{1}\{2}", artistDirectory, theTrack.Artist, theTrack.Album.Replace(":", " ").Replace("/", " ").Replace("\\", " "));
+                    if (!Directory.Exists(artistPath))
+                    {
+                        Directory.CreateDirectory(artistPath);
+                    }
+                    if (!Directory.Exists(albumPath))
+                    {
+                        Directory.CreateDirectory(albumPath);
+                    }
+                    var destFileName = albumPath + "\\" + Path.GetFileNameWithoutExtension(file) + Path.GetExtension(file).ToLower();
+                    CopyFile(file, destFileName);
+
+                    Console.WriteLine("Title : " + theTrack.Title);
+                    Console.WriteLine("Album : " + theTrack.Album);
+                    Console.WriteLine("Artist : " + theTrack.Artist);
+                    Console.WriteLine("Description : " + theTrack.Description);
+                    Console.WriteLine("Duration : " + theTrack.DurationMs);
+                }
+            }
+            #endregion
+
+            #region 文字格式化...
+
+
             Console.OutputEncoding = Encoding.UTF8;
 
-            string inputEnglish = "12adsdsadf22222343434";
-            string patternEnglish = "([0-9])([a-zA-Z]+)";
-            string outputEnglish = Regex.Replace(inputEnglish, patternEnglish, "$1 $2");
-            outputEnglish = Regex.Replace(outputEnglish, "([a-zA-Z]+)([0-9])", "$1 $2");
-            Console.WriteLine("英文：{0}", outputEnglish);
+            //string inputEnglish = "12adsdsadf22222343434";
+            //string patternEnglish = "([0-9])([a-zA-Z]+)";
+            //string outputEnglish = Regex.Replace(inputEnglish, patternEnglish, "$1 $2");
+            //outputEnglish = Regex.Replace(outputEnglish, "([a-zA-Z]+)([0-9])", "$1 $2");
+            //Console.WriteLine("英文：{0}", outputEnglish);
 
-            string inputChinese = "12哈哈哈哈哈22222343434";
-            string patternChinese = "([0-9])([\u4e00-\u9fa5]+)";
-            string outputChinese = Regex.Replace(inputChinese, patternChinese, "$1 $2");
-            outputChinese = Regex.Replace(outputChinese, "([\u4e00-\u9fa5]+)([0-9])", "$1 $2");
-            Console.WriteLine("中文：{0}", outputChinese);
+            //string inputChinese = "12哈哈哈哈哈22222343434";
+            //string patternChinese = "([0-9])([\u4e00-\u9fa5]+)";
+            //string outputChinese = Regex.Replace(inputChinese, patternChinese, "$1 $2");
+            //outputChinese = Regex.Replace(outputChinese, "([\u4e00-\u9fa5]+)([0-9])", "$1 $2");
+            //Console.WriteLine("中文：{0}", outputChinese);
 
-            string inputKorean = "11122아직하지못한말2332434";
-            string patternKorean = "([0-9])([\uac00-\ud7ff]+)";
-            string outputKorean = Regex.Replace(inputKorean, patternKorean, "$1 $2");
-            outputKorean = Regex.Replace(outputKorean, "([\uac00-\ud7ff]+)([0-9])", "$1 $2");
-            Console.WriteLine("韩文：{0}", outputKorean);
+            //string inputKorean = "11122아직하지못한말2332434";
+            //string patternKorean = "([0-9])([\uac00-\ud7ff]+)";
+            //string outputKorean = Regex.Replace(inputKorean, patternKorean, "$1 $2");
+            //outputKorean = Regex.Replace(outputKorean, "([\uac00-\ud7ff]+)([0-9])", "$1 $2");
+            //Console.WriteLine("韩文：{0}", outputKorean);
 
-            string inputJapanese = "12と22222343434";
-            string patternJapanese = "([0-9])([\u0800-\u4e00]+)";
-            string outputJapanese = Regex.Replace(inputJapanese, patternJapanese, "$1 $2");
-            outputJapanese = Regex.Replace(outputJapanese, "([\u0800-\u4e00]+)([0-9])", "$1 $2");
-            Console.WriteLine("日文：{0}", outputJapanese);
-
-
-            string inputEastAsianLanguages = "12못한말_uyuy热热热と343434";
-            string patternEastAsianLanguages = "([0-9])([\u0800-\ud7ff_a-zA-Z]+)";
-            string outputEastAsianLanguages = Regex.Replace(inputEastAsianLanguages, patternEastAsianLanguages, "$1 $2");
-            outputEastAsianLanguages = Regex.Replace(outputEastAsianLanguages, "([\u0800-\ud7ff_a-zA-Z]+)([0-9])", "$1 $2");
-            Console.WriteLine("东亚文：{0}", outputEastAsianLanguages);
+            //string inputJapanese = "12と22222343434";
+            //string patternJapanese = "([0-9])([\u0800-\u4e00]+)";
+            //string outputJapanese = Regex.Replace(inputJapanese, patternJapanese, "$1 $2");
+            //outputJapanese = Regex.Replace(outputJapanese, "([\u0800-\u4e00]+)([0-9])", "$1 $2");
+            //Console.WriteLine("日文：{0}", outputJapanese);
 
 
+            //string inputEastAsianLanguages = "16未成年";
+            //string patternEastAsianLanguages = "([0-9])([\u0800-\ud7ff_a-zA-Z]+)";
+            //string outputEastAsianLanguages = Regex.Replace(inputEastAsianLanguages, patternEastAsianLanguages, "$1 $2");
+            //outputEastAsianLanguages = Regex.Replace(outputEastAsianLanguages, "([\u0800-\ud7ff_a-zA-Z]+)([0-9])", "$1 $2");
+            //Console.WriteLine("东亚文：{0}", outputEastAsianLanguages);
+
+            #endregion
             //var korea = Encoding.GetEncoding("ks_c_5601-1987");
             //// 匹配数字临近中文
             //Regex regex = new Regex("([0-9])([\u4e00-\u9fa5]+)");
@@ -108,6 +121,24 @@ namespace ATLTest
             Console.ReadLine();
         }
 
+
+
+        /// <summary>
+        /// 格式化并替换字符。
+        /// </summary>
+        /// <param name="input">要搜索匹配项的字符串。</param>
+        /// <returns></returns>
+        public static string ReplaceFormat(string input)
+        {
+
+            input = input.Replace(" (", "「").Replace("(", "「").Replace(")", "」");
+
+            string pattern = "([0-9])([\u0800-\ud7ff_a-zA-Z]+)";
+            string output = Regex.Replace(input, pattern, "$1 $2");
+            output = Regex.Replace(output, "([\u0800-\ud7ff_a-zA-Z]+)([0-9])", "$1 $2");
+            return output;
+        }
+
         /// <summary>
         ///  将现有文件复制到新文件。 允许覆盖同名的文件。
         /// </summary>
@@ -119,11 +150,11 @@ namespace ATLTest
 
             if (File.Exists(sourceFileName))
             {
-                File.Copy(sourceFileName, destFileName, true);
+                File.Copy(sourceFileName, destFileName);
 
                 if (File.Exists(destFileName))
                 {
-                    File.Delete(sourceFileName);
+                    //File.Delete(sourceFileName);
                     return true;
                 }
             }
