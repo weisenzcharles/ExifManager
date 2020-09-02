@@ -13,6 +13,39 @@ namespace ATLTest
     {
         static void Main(string[] args)
         {
+            OrganizeFile();
+            //string input = "";
+            //string pattern = "([s?])(「+)";
+            //string output = Regex.Replace(input, pattern, "$1 $2");
+            //output = Regex.Replace(output, "(['\"{}\\(\\)\\[\\]\\*&.?!,…:;]+)([0-9])", "$1 $2");
+
+            //var korea = Encoding.GetEncoding("ks_c_5601-1987");
+            //// 匹配数字临近中文
+            //Regex regex = new Regex("([0-9])([\u4e00-\u9fa5]+)");
+            //Regex regex1 = new Regex("([\u4e00-\u9fa5]+)([0-9])");
+            //output = regex.Replace(input, "$1 $2");
+            //Console.WriteLine(output);
+
+            //output = regex1.Replace(input, "$1 $2");
+            //Console.WriteLine(output);
+
+            //string filename = GetInputFile( "Data/20191114.kml");
+            //Track theTrack = new Track("//192.168.0.199/home/Adele - Someone Like You.flac");
+
+            // Works the same way on any supported format (MP3, FLAC, WMA, SPC...)
+
+            //Console.WriteLine(output);
+            //theTrack.Composer = "Oscar Wilde (アイドル)"; // Support for "exotic" charsets
+            //theTrack.AdditionalFields["customField"] = "fancyValue"; // Support for custom fields
+            //
+            //Console.ReadLine();
+        }
+
+        /// <summary>
+        /// 整理文件。
+        /// </summary>
+        public static void OrganizeFile()
+        {
 
             #region 文件管理...
 
@@ -145,26 +178,6 @@ namespace ATLTest
 
             #endregion
 
-            //var korea = Encoding.GetEncoding("ks_c_5601-1987");
-            //// 匹配数字临近中文
-            //Regex regex = new Regex("([0-9])([\u4e00-\u9fa5]+)");
-            //Regex regex1 = new Regex("([\u4e00-\u9fa5]+)([0-9])");
-            //output = regex.Replace(input, "$1 $2");
-            //Console.WriteLine(output);
-
-            //output = regex1.Replace(input, "$1 $2");
-            //Console.WriteLine(output);
-
-            //string filename = GetInputFile( "Data/20191114.kml");
-            //Track theTrack = new Track("//192.168.0.199/home/Adele - Someone Like You.flac");
-
-            // Works the same way on any supported format (MP3, FLAC, WMA, SPC...)
-
-            //Console.WriteLine(output);
-            //theTrack.Composer = "Oscar Wilde (アイドル)"; // Support for "exotic" charsets
-            //theTrack.AdditionalFields["customField"] = "fancyValue"; // Support for custom fields
-            //
-            //Console.ReadLine();
         }
 
         /// <summary>
@@ -177,7 +190,7 @@ namespace ATLTest
             string pattern = "([0-9])(['\"{}\\(\\)\\[\\]\\*&.?!,…:;]+)";
             string output = Regex.Replace(input, pattern, "$1 $2");
             output = Regex.Replace(output, "(['\"{}\\(\\)\\[\\]\\*&.?!,…:;]+)([0-9])", "$1 $2");
-            return output ;
+            return output;
         }
 
         /// <summary>
@@ -193,6 +206,7 @@ namespace ATLTest
             string pattern = "([0-9])([\u0800-\ud7ff_a-zA-Z]+)";
             string output = Regex.Replace(input, pattern, "$1 $2");
             output = Regex.Replace(output, "([\u0800-\ud7ff_a-zA-Z]+)([0-9])", "$1 $2");
+            output = output.Replace(" (", "「").Replace("(", "「").Replace(")", "」");
             return output;
         }
 
