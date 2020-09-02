@@ -187,10 +187,11 @@ namespace ATLTest
         /// <returns></returns>
         public static string RemoveInvaildSymbol(string input)
         {
-            string pattern = "([0-9])(['\"{}\\(\\)\\[\\]\\*&.?!,…:;]+)";
-            string output = Regex.Replace(input, pattern, "$1 $2");
-            output = Regex.Replace(output, "(['\"{}\\(\\)\\[\\]\\*&.?!,…:;]+)([0-9])", "$1 $2");
-            return output;
+            return input.Replace(":", "").Replace("/", "").Replace("\\", "").Replace("?", "").Replace("<", "").Replace(">", "").Replace("*", "").Replace("|", "");
+            //string pattern = "([0-9])(['\"{}\\(\\)\\[\\]\\*&.?!,…:;]+)";
+            //string output = Regex.Replace(input, pattern, "$1 $2");
+            //output = Regex.Replace(output, "(['\"{}\\(\\)\\[\\]\\*&.?!,…:;]+)([0-9])", "$1 $2");
+            //return output;
         }
 
         /// <summary>
