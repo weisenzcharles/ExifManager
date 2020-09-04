@@ -14,6 +14,12 @@ namespace ATLTest
         static void Main(string[] args)
         {
             OrganizeFile();
+
+
+
+            string input = "a.bc...";
+            Console.WriteLine(input.Trim('.'));
+
             //string input = "";
             //string pattern = "([s?])(「+)";
             //string output = Regex.Replace(input, pattern, "$1 $2");
@@ -50,92 +56,75 @@ namespace ATLTest
             #region 文件管理...
 
             Dictionary<string, string> albumsLocal = new Dictionary<string, string>();
-            string rootPath = @"\\192.168.0.199\home\Test";
-            string artistDirectory = @"\\192.168.0.199\home\Test\music";
-            Directory.CreateDirectory(artistDirectory);
-            // Need the sub-directory for the Kmz test
-            //CopyResource("MagicFile.Test.Data.Akon - Right Now「Na Na Na」.flac", "Data/Akon - Right Now「Na Na Na」.flac");
-            //CopyResource("MagicFile.Test.Data.Alex Goot - Catch My Breath.mp3", "Data/Alex Goot - Catch My Breath.mp3");
-            var files = Directory.GetFiles(rootPath);
+            //string rootPath = @"\\192.168.0.199\Music\Music";
+            //string artistDirectory = @"\\192.168.0.199\Music\Artist"; 
 
+            string rootPath = @"D:\Users\Charles Zhang\Documents\MuMu共享文件夹\音乐";
+            string artistDirectory = @"D:\Users\Charles Zhang\Documents\MuMu共享文件夹\音乐\Artist";
+            Directory.CreateDirectory(artistDirectory);
+
+            //Directory.GetDirectories()
+
+            var files = Directory.GetFiles(rootPath);
 
             foreach (string file in files)
             {
                 Console.WriteLine("File : " + file);
-                Track theTrack = new Track(file);
-                if (theTrack != null && !string.IsNullOrEmpty(theTrack.Title))
+                if (Path.GetExtension(file).ToLower().Equals(".mp3") || Path.GetExtension(file).ToLower().Equals(".flac"))
                 {
-                    string artistPath = string.Format(@"{0}\{1}", artistDirectory, theTrack.Artist);
-                    string albumPath = string.Format(@"{0}\{1}\{2}", artistDirectory, theTrack.Artist, theTrack.Album.Replace(":", " ").Replace("/", " ").Replace("\\", " ").Replace("?", " ").Replace("<", " ").Replace(">", " ").Replace("*", " ").Replace("|", " "));
-
-                    if (!Directory.Exists(artistPath))
+                    Track theTrack = new Track(file);
+                    if (theTrack != null && !string.IsNullOrEmpty(theTrack.Title))
                     {
-                        Directory.CreateDirectory(artistPath);
-                    }
+                        string artistPath = string.Format(@"{0}\{1}", artistDirectory, theTrack.Artist.Trim());
+                        string albumPath = string.Format(@"{0}\{1}\{2}", artistDirectory, theTrack.Artist.Trim(), RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim())));
 
-
-                    string fileName = Path.GetFileNameWithoutExtension(file);
-                    if (fileName.Split('-').Length > 0)
-                    {
-                        string songArtist = fileName.Split('-')[0].Trim();
-                        string songTitle = ReplaceFormat(fileName.Split('-')[1].Trim());
-                        var artists = songArtist.Split('、');
-                        if (artists.Length > 0)
+                        string fileName = Path.GetFileNameWithoutExtension(file);
+                        if (fileName.Split('-').Length > 1)
                         {
-                            albumPath = string.Format(@"{0}\{1}\{2}", artistDirectory, artists[0], theTrack.Album.Replace(":", " ").Replace("/", " ").Replace("\\", " ").Replace("?", " ").Replace("<", " ").Replace(">", " ").Replace("*", " ").Replace("|", " "));
-
-                            foreach (var artist in artists)
+                            string songArtist = fileName.Split('-')[0].Trim();
+                            string songTitle = ReplaceFormat(fileName.Split('-')[1].Trim());
+                            var artists = songArtist.Replace(",", "、").Replace("&", "、").Split('、');
+                            if (artists.Length > 1)
                             {
-                                theTrack.Title = ReplaceFormat(theTrack.Title);
-                                theTrack.Album = ReplaceFormat(theTrack.Album);
-                                theTrack.Artist = artist;
-                                theTrack.Save();
+                                albumPath = string.Format(@"{0}\{1}\{2}", artistDirectory, artists[0].Trim(), RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim())));
+                                foreach (var artist in artists)
+                                {
+                                    theTrack.Title = ReplaceFormat(theTrack.Title.Trim());
+                                    theTrack.Album = ReplaceFormat(theTrack.Album.Trim());
+                                    theTrack.Artist = artist.Trim();
+                                    theTrack.Save();
+                                    if (!Directory.Exists(albumPath))
+                                    {
+                                        Directory.CreateDirectory(albumPath);
+                                    }
+                                    var destFileName = string.Format("{0}\\{1} - {2}{3}", albumPath, artist.Trim(), songTitle, Path.GetExtension(file).ToLower());
+                                    CopyFile(file, destFileName);
+                                }
+                            }
+                            else
+                            {
                                 if (!Directory.Exists(albumPath))
                                 {
                                     Directory.CreateDirectory(albumPath);
                                 }
-                                var destFileName = string.Format("{0}\\{1} - {2}{3}", albumPath, artist, songTitle, Path.GetExtension(file).ToLower());
+                                theTrack.Title = ReplaceFormat(theTrack.Title.Trim());
+                                theTrack.Album = ReplaceFormat(theTrack.Album.Trim());
+                                //theTrack.Artist = ReplaceFormat(theTrack.Artist);
+                                theTrack.Save();
+
+                                var destFileName = string.Format("{0}\\{1} - {2}{3}", albumPath, songArtist, songTitle, Path.GetExtension(file).ToLower());
                                 CopyFile(file, destFileName);
                             }
                         }
-                        else
-                        {
-                            if (!Directory.Exists(albumPath))
-                            {
-                                Directory.CreateDirectory(albumPath);
-                            }
-                            theTrack.Title = ReplaceFormat(theTrack.Title);
-                            theTrack.Album = ReplaceFormat(theTrack.Album);
-                            //theTrack.Artist = ReplaceFormat(theTrack.Artist);
-                            theTrack.Save();
+                        Console.WriteLine("Title : " + theTrack.Title);
+                        Console.WriteLine("Album : " + theTrack.Album);
+                        Console.WriteLine("Artist : " + theTrack.Artist);
+                        Console.WriteLine("Description : " + theTrack.Description);
+                        Console.WriteLine("Duration : " + theTrack.DurationMs);
 
-                            var destFileName = string.Format("{0}\\{1} - {2}{3}", albumPath, songArtist, songTitle, Path.GetExtension(file).ToLower());
-                            CopyFile(file, destFileName);
-                        }
                     }
 
-
-                    //string key = string.Format("{0}", theTrack.Album);
-                    //if (!albumsLocal.ContainsKey(key))
-                    //{
-
-
-                    //albumsLocal.Add(theTrack.Album, albumPath);
-                    //var destFileName = albumPath + "\\" + Path.GetFileNameWithoutExtension(file) + Path.GetExtension(file).ToLower();
-                    //CopyFile(file, destFileName);
-                    //}
-                    //else
-                    //{
-                    //    string albumPath = key;
-                    //    var destFileName = albumPath + "\\" + Path.GetFileNameWithoutExtension(file) + Path.GetExtension(file).ToLower();
-                    //    CopyFile(file, destFileName);
-                    //}
-                    Console.WriteLine("Title : " + theTrack.Title);
-                    Console.WriteLine("Album : " + theTrack.Album);
-                    Console.WriteLine("Artist : " + theTrack.Artist);
-                    Console.WriteLine("Description : " + theTrack.Description);
-                    Console.WriteLine("Duration : " + theTrack.DurationMs);
-
+                    File.Move(file, string.Format("{0}\\{1}{2}", @"D:\Users\Charles Zhang\Documents\MuMu共享文件夹\音乐\000", Path.GetFileNameWithoutExtension(file), Path.GetExtension(file).ToLower()));
                 }
             }
             #endregion
@@ -187,7 +176,7 @@ namespace ATLTest
         /// <returns></returns>
         public static string RemoveInvaildSymbol(string input)
         {
-            return input.Replace(":", "").Replace("/", "").Replace("\\", "").Replace("?", "").Replace("<", "").Replace(">", "").Replace("*", "").Replace("|", "");
+            return input.Replace(":", "").Replace("/", "").Replace("\\", "").Replace("?", "").Replace("<", "").Replace(">", "").Replace("*", "").Replace("|", "").Replace("\"", "").Trim().Trim('.');
             //string pattern = "([0-9])(['\"{}\\(\\)\\[\\]\\*&.?!,…:;]+)";
             //string output = Regex.Replace(input, pattern, "$1 $2");
             //output = Regex.Replace(output, "(['\"{}\\(\\)\\[\\]\\*&.?!,…:;]+)([0-9])", "$1 $2");
@@ -202,7 +191,7 @@ namespace ATLTest
         public static string ReplaceFormat(string input)
         {
 
-            input = input.Replace(" (", "「").Replace("(", "「").Replace(")", "」");
+            input = input.Replace(" (", "「").Replace("(", "「").Replace(")", "」").Replace("（", "「").Replace("）", "」").Replace(" [", "「").Replace("[", "「").Replace("]", "」");
 
             string pattern = "([0-9])([\u0800-\ud7ff_a-zA-Z]+)";
             string output = Regex.Replace(input, pattern, "$1 $2");
