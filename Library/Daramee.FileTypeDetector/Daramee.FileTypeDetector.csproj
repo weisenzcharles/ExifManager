@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>FileTypeDetector.pfx</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <PackageId>Daramee.FileTypeDetector</PackageId>
+    <Title>File Type Detector</Title>
+    <Version>1.0.3</Version>
+    <Authors>Daramee</Authors>
+    <Company>DARAM WORLD</Company>
+    <Product>File Type Detector</Product>
+    <Description>Signature based File Type Detecting Library</Description>
+    <Copyright>Copyright (c) 2015-2020 Daramee</Copyright>
+    <PackageProjectUrl>https://github.com/daramkun/FileTypeDetector</PackageProjectUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
+	<PackageIconUrl></PackageIconUrl>
+    <RepositoryUrl>https://github.com/daramkun/FileTypeDetector</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>File Extension</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageIcon>Icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <Import Project="..\Daramee.FileTypeDetector.Shared\Daramee.FileTypeDetector.Shared.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

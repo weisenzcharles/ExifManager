@@ -1,0 +1,352 @@
+﻿<Window x:Class="MagicFile.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MagicFile"
+        xmlns:dcl="clr-namespace:Daramee.DaramCommonLib"
+        xmlns:ext="clr-namespace:MagicFile.Extension"
+        mc:Ignorable="d" Icon="Resources/ProgramIcon.ico"
+        Title="{Binding Path=[magic_file]}" Width="750" Height="492"
+		DataContext="{x:Static dcl:StringTable.SharedStrings}"
+        MinWidth="750" MinHeight="492" Loaded="Window_Loaded"
+        Activated="Window_Activated" Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="32" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0" ClipToBounds="False">
+            <ToolBar Focusable="True" ToolBarTray.IsLocked="True" VerticalAlignment="Stretch" Height="32">
+                <ToolBar.Resources>
+                    <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Opacity" Value="1"/>
+                        <Setter Property="IsEnabled" Value="True"/>
+                        <Setter Property="Width" Value="28"/>
+                        <Setter Property="Height" Value="28"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.25"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToolBar.Resources>
+
+                <!--<Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=OpenIcon}" ToolTip="{Binding Path=[open]}" Click="Menu_System_Open" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=DeleteIcon}" ToolTip="{Binding Path=[clear]}" Click="Menu_System_Clear" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ApplyIcon}" ToolTip="{Binding Path=[apply]}" Click="Menu_System_Apply" />
+                <Separator />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=UndoIcon}" ToolTip="{Binding Path=[undo]}" Click="Menu_System_Undo" IsEnabled="{Binding ElementName=mainWindow, Path=UndoManagerHasUndoStackItem}" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=RedoIcon}" ToolTip="{Binding Path=[redo]}" Click="Menu_System_Redo" IsEnabled="{Binding ElementName=mainWindow, Path=UndoManagerHasRedoStackItem}" />
+                <Separator />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ItemUpIcon}" ToolTip="{Binding Path=[item_up]}" Click="Menu_System_ItemUp" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ItemDownIcon}" ToolTip="{Binding Path=[item_down]}" Click="Menu_System_ItemDown" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ItemSortIcon}" ToolTip="{Binding Path=[item_sort]}" Click="Menu_System_ItemSort" />
+
+                <Separator />
+
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ReplaceTextIcon}" ToolTip="{Binding Path=[process_replace_plain_text]}" Click="ReplacePlainText_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ConcatTextIcon}" ToolTip="{Binding Path=[process_concatenate_text]}" Click="ConcatText_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=TrimTextIcon}" ToolTip="{Binding Path=[process_trimming_text]}" Click="Trimming_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=DeleteBlockIcon}" ToolTip="{Binding Path=[process_delete_block]}" Click="DeleteBlock_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=DeleteTextIcon}" ToolTip="{Binding Path=[process_delete_text]}" Click="DeleteText_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=SubstringIcon}" ToolTip="{Binding Path=[process_substring_text]}" Click="Substring_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=CasecastTextIcon}" ToolTip="{Binding Path=[process_casecast_text]}" Click="Castcast_Click" />
+
+                <Separator />
+
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=AddExtensionIcon}" ToolTip="{Binding Path=[process_add_extension]}" Click="AddExtension_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=DeleteExtensionIcon}" ToolTip="{Binding Path=[process_delete_extension]}" Click="RemoveExtension_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ReplaceExtensionIcon}" ToolTip="{Binding Path=[process_change_extension]}" Click="ChangeExtension_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=CasecastExtensionIcon}" ToolTip="{Binding Path=[process_casecast_extension]}" Click="CastcastExtension_Click" />
+
+                <Separator />
+
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=DeleteWithoutNumbersIcon}" ToolTip="{Binding Path=[process_delete_without_numbers]}" Click="DeleteWithoutNumbers_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=MatchNumberCountIcon}" ToolTip="{Binding Path=[process_matching_number_count]}" Click="MatchingNumberCount_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=AddIndexIcon}" ToolTip="{Binding Path=[process_add_index_numbers]}" Click="AddIndexNumbers_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=IncrementDecrementNumberIcon}" ToolTip="{Binding Path=[process_increase_decrease_numbers]}" Click="IncreaseDecreaseNumbers_Click" />
+
+                <Separator />
+
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=AddDateIcon}" ToolTip="{Binding Path=[process_add_date]}" Click="AddDate_Click" />-->
+            </ToolBar>
+        </ToolBarTray>
+
+        <ListView Grid.Row="1" Name="listViewRoles" AllowDrop="True"
+                              Focusable="True"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                              Drop="ListViewFiles_Drop" DragEnter="ListViewFiles_DragEnter" KeyUp="ListViewFiles_KeyUp" Height="100">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <EventSetter Event="MouseDoubleClick" Handler="Item_DoubleClick" />
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <ListView.View>
+                <GridView>
+                    <GridView.ColumnHeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Margin="0,4,0,4" />
+                        </DataTemplate>
+                    </GridView.ColumnHeaderTemplate>
+
+                    <GridViewColumn Width="225">
+                        <GridViewColumnHeader Content="{Binding Path=[original_name]}" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding OriginalFullPath, Converter={StaticResource pathToIconConverter}}" Height="16" Margin="0,0,4,0" />
+                                    <TextBlock Foreground="DarkSlateBlue" Text="{Binding OriginalFilename}" ToolTip="{Binding OriginalFilename}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="230">
+                        <GridViewColumnHeader Content="{Binding Path=[changed_name]}" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Foreground="DarkSlateBlue" Text="{Binding ChangedFilename}" ToolTip="{Binding ChangedFilename}" Background="Transparent" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="105">
+                        <GridViewColumnHeader Content="{Binding Path=[original_path]}" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Cursor="Arrow" Foreground="DarkSlateBlue" Text="{Binding OriginalPath}" ToolTip="{Binding OriginalPath}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="110">
+                        <GridViewColumnHeader Content="{Binding Path=[changed_path]}" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Foreground="DarkSlateBlue" Text="{Binding ChangedPath}" ToolTip="{Binding ChangedPath}" Background="Transparent" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{Binding Path=[undo]}" Click="Menu_System_Undo" />
+                    <MenuItem Header="{Binding Path=[redo]}" Click="Menu_System_Redo" />
+                    <Separator />
+                    <!--<MenuItem Header="{Binding Path=[filename_processes]}">
+                        <MenuItem Header="{Binding Path=[process_replace_plain_text]}" Click="ReplacePlainText_Click" />
+                        <MenuItem Header="{Binding Path=[process_replace_regex_text]}" Click="ReplaceRegex_Click" />
+                        <MenuItem Header="{Binding Path=[process_rearrange_regex_text]}" Click="RearrangeRegex_Click" />
+                        <MenuItem Header="{Binding Path=[process_concatenate_text]}" Click="ConcatText_Click" />
+                        <MenuItem Header="{Binding Path=[process_trimming_text]}" Click="Trimming_Click" />
+                        <MenuItem Header="{Binding Path=[process_delete_block]}" Click="DeleteBlock_Click" />
+                        <MenuItem Header="{Binding Path=[process_delete_text]}" Click="DeleteText_Click" />
+                        <MenuItem Header="{Binding Path=[process_substring_text]}" Click="Substring_Click" />
+                        <MenuItem Header="{Binding Path=[process_casecast_text]}" Click="Castcast_Click" />
+                    </MenuItem>
+                    <MenuItem Header="{Binding Path=[extension_processes]}">
+                        <MenuItem Header="{Binding Path=[process_add_extension]}" Click="AddExtension_Click" />
+                        <MenuItem Header="{Binding Path=[process_add_extension_automatically]}" Click="AddExtensionAutomatically_Click" />
+                        <MenuItem Header="{Binding Path=[process_delete_extension]}" Click="RemoveExtension_Click" />
+                        <MenuItem Header="{Binding Path=[process_change_extension]}" Click="ChangeExtension_Click" />
+                        <MenuItem Header="{Binding Path=[process_casecast_extension]}" Click="CastcastExtension_Click" />
+                    </MenuItem>
+                    <MenuItem Header="{Binding Path=[number_processes]}">
+                        <MenuItem Header="{Binding Path=[process_delete_without_numbers]}" Click="DeleteWithoutNumbers_Click" />
+                        <MenuItem Header="{Binding Path=[process_matching_number_count]}" Click="MatchingNumberCount_Click" />
+                        <MenuItem Header="{Binding Path=[process_add_index_numbers]}" Click="AddIndexNumbers_Click" />
+                        <MenuItem Header="{Binding Path=[process_increase_decrease_numbers]}" Click="IncreaseDecreaseNumbers_Click" />
+                    </MenuItem>
+                    <MenuItem Header="{Binding Path=[date_processes]}">
+                        <MenuItem Header="{Binding Path=[process_add_date]}" Click="AddDate_Click" />
+                        <MenuItem Header="{Binding Path=[process_delete_date]}" Click="DeleteDate_Click" />
+                        <MenuItem Header="{Binding Path=[process_increase_decrease_date]}" Click="IncreaseDecreaseDate_Click" IsEnabled="False" />
+                    </MenuItem>
+                    <MenuItem Header="{Binding Path=[path_processes]}">
+                        <MenuItem Header="{Binding Path=[process_change_path]}" Click="ChangePath_Click" />
+                        <MenuItem Header="{Binding Path=[process_move_path_relative]}" Click="MovePathRelative_Click" IsEnabled="False" />
+                    </MenuItem>
+                    <MenuItem Header="{Binding Path=[properties_processes]}">
+                        <MenuItem Header="{Binding Path=[process_add_media_tag]}" Click="AddMediaTag_Click" />
+                        <MenuItem Header="{Binding Path=[process_add_document_tag]}" Click="AddDocumentTag_Click" />
+                        <MenuItem Header="{Binding Path=[process_add_file_hash]}" Click="AddFileHash_Click" />
+                    </MenuItem>-->
+                    <!--<Separator />-->
+                    <MenuItem Header="{Binding Path=[batch_process]}" Click="BatchProcess_Click" />
+                    <!--<Separator />
+                    <MenuItem Header="{Binding Path=[check_update]}" Click="Menu_System_CheckUpdate" />-->
+                </ContextMenu>
+            </ListView.ContextMenu>
+        </ListView>
+        <ToolBarTray Grid.Row="2" ClipToBounds="False">
+            <ToolBar Focusable="True" ToolBarTray.IsLocked="True" VerticalAlignment="Stretch" Height="32">
+                <ToolBar.Resources>
+                    <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Opacity" Value="1"/>
+                        <Setter Property="IsEnabled" Value="True"/>
+                        <Setter Property="Width" Value="28"/>
+                        <Setter Property="Height" Value="28"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.25"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToolBar.Resources>
+
+                <!--<Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=OpenIcon}" ToolTip="{Binding Path=[open]}" Click="Menu_System_Open" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=DeleteIcon}" ToolTip="{Binding Path=[clear]}" Click="Menu_System_Clear" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ApplyIcon}" ToolTip="{Binding Path=[apply]}" Click="Menu_System_Apply" />
+                <Separator />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=UndoIcon}" ToolTip="{Binding Path=[undo]}" Click="Menu_System_Undo" IsEnabled="{Binding ElementName=mainWindow, Path=UndoManagerHasUndoStackItem}" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=RedoIcon}" ToolTip="{Binding Path=[redo]}" Click="Menu_System_Redo" IsEnabled="{Binding ElementName=mainWindow, Path=UndoManagerHasRedoStackItem}" />
+                <Separator />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ItemUpIcon}" ToolTip="{Binding Path=[item_up]}" Click="Menu_System_ItemUp" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ItemDownIcon}" ToolTip="{Binding Path=[item_down]}" Click="Menu_System_ItemDown" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ItemSortIcon}" ToolTip="{Binding Path=[item_sort]}" Click="Menu_System_ItemSort" />
+
+                <Separator />
+
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ReplaceTextIcon}" ToolTip="{Binding Path=[process_replace_plain_text]}" Click="ReplacePlainText_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ConcatTextIcon}" ToolTip="{Binding Path=[process_concatenate_text]}" Click="ConcatText_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=TrimTextIcon}" ToolTip="{Binding Path=[process_trimming_text]}" Click="Trimming_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=DeleteBlockIcon}" ToolTip="{Binding Path=[process_delete_block]}" Click="DeleteBlock_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=DeleteTextIcon}" ToolTip="{Binding Path=[process_delete_text]}" Click="DeleteText_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=SubstringIcon}" ToolTip="{Binding Path=[process_substring_text]}" Click="Substring_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=CasecastTextIcon}" ToolTip="{Binding Path=[process_casecast_text]}" Click="Castcast_Click" />
+
+                <Separator />
+
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=AddExtensionIcon}" ToolTip="{Binding Path=[process_add_extension]}" Click="AddExtension_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=DeleteExtensionIcon}" ToolTip="{Binding Path=[process_delete_extension]}" Click="RemoveExtension_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=ReplaceExtensionIcon}" ToolTip="{Binding Path=[process_change_extension]}" Click="ChangeExtension_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=CasecastExtensionIcon}" ToolTip="{Binding Path=[process_casecast_extension]}" Click="CastcastExtension_Click" />
+
+                <Separator />
+
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=DeleteWithoutNumbersIcon}" ToolTip="{Binding Path=[process_delete_without_numbers]}" Click="DeleteWithoutNumbers_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=MatchNumberCountIcon}" ToolTip="{Binding Path=[process_matching_number_count]}" Click="MatchingNumberCount_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=AddIndexIcon}" ToolTip="{Binding Path=[process_add_index_numbers]}" Click="AddIndexNumbers_Click" />
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=IncrementDecrementNumberIcon}" ToolTip="{Binding Path=[process_increase_decrease_numbers]}" Click="IncreaseDecreaseNumbers_Click" />
+
+                <Separator />
+
+                <Button Content="{Binding Source={x:Static ext:ToolBarIconExtension.SharedExtension}, Path=AddDateIcon}" ToolTip="{Binding Path=[process_add_date]}" Click="AddDate_Click" />-->
+            </ToolBar>
+        </ToolBarTray>
+
+        <ListView Grid.Row="3" Name="listViewFiles" AllowDrop="True"
+                              Focusable="True"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                              Drop="ListViewFiles_Drop" DragEnter="ListViewFiles_DragEnter" KeyUp="ListViewFiles_KeyUp" Height="200">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <EventSetter Event="MouseDoubleClick" Handler="Item_DoubleClick" />
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <ListView.View>
+                <GridView>
+                    <GridView.ColumnHeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Margin="0,4,0,4" />
+                        </DataTemplate>
+                    </GridView.ColumnHeaderTemplate>
+
+                    <GridViewColumn Width="225">
+                        <GridViewColumnHeader Content="{Binding Path=[original_name]}" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding OriginalFullPath, Converter={StaticResource pathToIconConverter}}" Height="16" Margin="0,0,4,0" />
+                                    <TextBlock Foreground="DarkSlateBlue" Text="{Binding OriginalFilename}" ToolTip="{Binding OriginalFilename}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="230">
+                        <GridViewColumnHeader Content="{Binding Path=[changed_name]}" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Foreground="DarkSlateBlue" Text="{Binding ChangedFilename}" ToolTip="{Binding ChangedFilename}" Background="Transparent" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="105">
+                        <GridViewColumnHeader Content="{Binding Path=[original_path]}" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Cursor="Arrow" Foreground="DarkSlateBlue" Text="{Binding OriginalPath}" ToolTip="{Binding OriginalPath}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="110">
+                        <GridViewColumnHeader Content="{Binding Path=[changed_path]}" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Foreground="DarkSlateBlue" Text="{Binding ChangedPath}" ToolTip="{Binding ChangedPath}" Background="Transparent" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{Binding Path=[undo]}" Click="Menu_System_Undo" />
+                    <MenuItem Header="{Binding Path=[redo]}" Click="Menu_System_Redo" />
+                    <Separator />
+                    <!--<MenuItem Header="{Binding Path=[filename_processes]}">
+                        <MenuItem Header="{Binding Path=[process_replace_plain_text]}" Click="ReplacePlainText_Click" />
+                        <MenuItem Header="{Binding Path=[process_replace_regex_text]}" Click="ReplaceRegex_Click" />
+                        <MenuItem Header="{Binding Path=[process_rearrange_regex_text]}" Click="RearrangeRegex_Click" />
+                        <MenuItem Header="{Binding Path=[process_concatenate_text]}" Click="ConcatText_Click" />
+                        <MenuItem Header="{Binding Path=[process_trimming_text]}" Click="Trimming_Click" />
+                        <MenuItem Header="{Binding Path=[process_delete_block]}" Click="DeleteBlock_Click" />
+                        <MenuItem Header="{Binding Path=[process_delete_text]}" Click="DeleteText_Click" />
+                        <MenuItem Header="{Binding Path=[process_substring_text]}" Click="Substring_Click" />
+                        <MenuItem Header="{Binding Path=[process_casecast_text]}" Click="Castcast_Click" />
+                    </MenuItem>
+                    <MenuItem Header="{Binding Path=[extension_processes]}">
+                        <MenuItem Header="{Binding Path=[process_add_extension]}" Click="AddExtension_Click" />
+                        <MenuItem Header="{Binding Path=[process_add_extension_automatically]}" Click="AddExtensionAutomatically_Click" />
+                        <MenuItem Header="{Binding Path=[process_delete_extension]}" Click="RemoveExtension_Click" />
+                        <MenuItem Header="{Binding Path=[process_change_extension]}" Click="ChangeExtension_Click" />
+                        <MenuItem Header="{Binding Path=[process_casecast_extension]}" Click="CastcastExtension_Click" />
+                    </MenuItem>
+                    <MenuItem Header="{Binding Path=[number_processes]}">
+                        <MenuItem Header="{Binding Path=[process_delete_without_numbers]}" Click="DeleteWithoutNumbers_Click" />
+                        <MenuItem Header="{Binding Path=[process_matching_number_count]}" Click="MatchingNumberCount_Click" />
+                        <MenuItem Header="{Binding Path=[process_add_index_numbers]}" Click="AddIndexNumbers_Click" />
+                        <MenuItem Header="{Binding Path=[process_increase_decrease_numbers]}" Click="IncreaseDecreaseNumbers_Click" />
+                    </MenuItem>
+                    <MenuItem Header="{Binding Path=[date_processes]}">
+                        <MenuItem Header="{Binding Path=[process_add_date]}" Click="AddDate_Click" />
+                        <MenuItem Header="{Binding Path=[process_delete_date]}" Click="DeleteDate_Click" />
+                        <MenuItem Header="{Binding Path=[process_increase_decrease_date]}" Click="IncreaseDecreaseDate_Click" IsEnabled="False" />
+                    </MenuItem>
+                    <MenuItem Header="{Binding Path=[path_processes]}">
+                        <MenuItem Header="{Binding Path=[process_change_path]}" Click="ChangePath_Click" />
+                        <MenuItem Header="{Binding Path=[process_move_path_relative]}" Click="MovePathRelative_Click" IsEnabled="False" />
+                    </MenuItem>
+                    <MenuItem Header="{Binding Path=[properties_processes]}">
+                        <MenuItem Header="{Binding Path=[process_add_media_tag]}" Click="AddMediaTag_Click" />
+                        <MenuItem Header="{Binding Path=[process_add_document_tag]}" Click="AddDocumentTag_Click" />
+                        <MenuItem Header="{Binding Path=[process_add_file_hash]}" Click="AddFileHash_Click" />
+                    </MenuItem>-->
+                    <!--<Separator />-->
+                    <MenuItem Header="{Binding Path=[batch_process]}" Click="BatchProcess_Click" />
+                    <!--<Separator />
+                    <MenuItem Header="{Binding Path=[check_update]}" Click="Menu_System_CheckUpdate" />-->
+                </ContextMenu>
+            </ListView.ContextMenu>
+        </ListView>
+    </Grid>
+</Window>

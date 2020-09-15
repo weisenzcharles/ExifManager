@@ -1,0 +1,301 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\ProgramIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;WPF</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <Import Project="..\Library\Daramee.DaramCommonLib.Shared\Daramee.DaramCommonLib.Shared.projitems" Label="Shared" />
+
+  <Import Project="..\Library\Daramee.FileTypeDetector.Shared\Daramee.FileTypeDetector.Shared.projitems" Label="Shared" />
+
+  <Import Project="..\Library\Daramee.Nargs.Shared\Daramee.Nargs.Shared.projitems" Label="Shared" />
+
+  <Import Project="..\Library\Daramee.Winston.Shared\Daramee.Winston.Shared.projitems" Label="Shared" />
+
+
+  <ItemGroup>
+    <Page Remove="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Icon\ok.png" />
+    <Content Include="Resources\Languages\Icons\ad.png" />
+    <Content Include="Resources\Languages\Icons\ae.png" />
+    <Content Include="Resources\Languages\Icons\af.png" />
+    <Content Include="Resources\Languages\Icons\ag.png" />
+    <Content Include="Resources\Languages\Icons\ai.png" />
+    <Content Include="Resources\Languages\Icons\al.png" />
+    <Content Include="Resources\Languages\Icons\am.png" />
+    <Content Include="Resources\Languages\Icons\an.png" />
+    <Content Include="Resources\Languages\Icons\ao.png" />
+    <Content Include="Resources\Languages\Icons\ar.png" />
+    <Content Include="Resources\Languages\Icons\as.png" />
+    <Content Include="Resources\Languages\Icons\at.png" />
+    <Content Include="Resources\Languages\Icons\au.png" />
+    <Content Include="Resources\Languages\Icons\aw.png" />
+    <Content Include="Resources\Languages\Icons\ax.png" />
+    <Content Include="Resources\Languages\Icons\az.png" />
+    <Content Include="Resources\Languages\Icons\ba.png" />
+    <Content Include="Resources\Languages\Icons\bb.png" />
+    <Content Include="Resources\Languages\Icons\bd.png" />
+    <Content Include="Resources\Languages\Icons\be.png" />
+    <Content Include="Resources\Languages\Icons\bf.png" />
+    <Content Include="Resources\Languages\Icons\bg.png" />
+    <Content Include="Resources\Languages\Icons\bh.png" />
+    <Content Include="Resources\Languages\Icons\bi.png" />
+    <Content Include="Resources\Languages\Icons\bj.png" />
+    <Content Include="Resources\Languages\Icons\bm.png" />
+    <Content Include="Resources\Languages\Icons\bn.png" />
+    <Content Include="Resources\Languages\Icons\bo.png" />
+    <Content Include="Resources\Languages\Icons\br.png" />
+    <Content Include="Resources\Languages\Icons\bs.png" />
+    <Content Include="Resources\Languages\Icons\bt.png" />
+    <Content Include="Resources\Languages\Icons\bv.png" />
+    <Content Include="Resources\Languages\Icons\bw.png" />
+    <Content Include="Resources\Languages\Icons\by.png" />
+    <Content Include="Resources\Languages\Icons\bz.png" />
+    <Content Include="Resources\Languages\Icons\ca.png" />
+    <Content Include="Resources\Languages\Icons\cc.png" />
+    <Content Include="Resources\Languages\Icons\cd.png" />
+    <Content Include="Resources\Languages\Icons\cf.png" />
+    <Content Include="Resources\Languages\Icons\cg.png" />
+    <Content Include="Resources\Languages\Icons\ch.png" />
+    <Content Include="Resources\Languages\Icons\ci.png" />
+    <Content Include="Resources\Languages\Icons\ck.png" />
+    <Content Include="Resources\Languages\Icons\cl.png" />
+    <Content Include="Resources\Languages\Icons\cm.png" />
+    <Content Include="Resources\Languages\Icons\cn.png" />
+    <Content Include="Resources\Languages\Icons\co.png" />
+    <Content Include="Resources\Languages\Icons\cr.png" />
+    <Content Include="Resources\Languages\Icons\cs.png" />
+    <Content Include="Resources\Languages\Icons\cu.png" />
+    <Content Include="Resources\Languages\Icons\cv.png" />
+    <Content Include="Resources\Languages\Icons\cx.png" />
+    <Content Include="Resources\Languages\Icons\cy.png" />
+    <Content Include="Resources\Languages\Icons\cz.png" />
+    <Content Include="Resources\Languages\Icons\de.png" />
+    <Content Include="Resources\Languages\Icons\dj.png" />
+    <Content Include="Resources\Languages\Icons\dk.png" />
+    <Content Include="Resources\Languages\Icons\dm.png" />
+    <Content Include="Resources\Languages\Icons\do.png" />
+    <Content Include="Resources\Languages\Icons\dz.png" />
+    <Content Include="Resources\Languages\Icons\ec.png" />
+    <Content Include="Resources\Languages\Icons\ee.png" />
+    <Content Include="Resources\Languages\Icons\eg.png" />
+    <Content Include="Resources\Languages\Icons\eh.png" />
+    <Content Include="Resources\Languages\Icons\er.png" />
+    <Content Include="Resources\Languages\Icons\es.png" />
+    <Content Include="Resources\Languages\Icons\et.png" />
+    <Content Include="Resources\Languages\Icons\fam.png" />
+    <Content Include="Resources\Languages\Icons\fi.png" />
+    <Content Include="Resources\Languages\Icons\fj.png" />
+    <Content Include="Resources\Languages\Icons\fk.png" />
+    <Content Include="Resources\Languages\Icons\fm.png" />
+    <Content Include="Resources\Languages\Icons\fo.png" />
+    <Content Include="Resources\Languages\Icons\fr.png" />
+    <Content Include="Resources\Languages\Icons\ga.png" />
+    <Content Include="Resources\Languages\Icons\gb.png" />
+    <Content Include="Resources\Languages\Icons\gd.png" />
+    <Content Include="Resources\Languages\Icons\ge.png" />
+    <Content Include="Resources\Languages\Icons\gf.png" />
+    <Content Include="Resources\Languages\Icons\gh.png" />
+    <Content Include="Resources\Languages\Icons\gi.png" />
+    <Content Include="Resources\Languages\Icons\gl.png" />
+    <Content Include="Resources\Languages\Icons\gm.png" />
+    <Content Include="Resources\Languages\Icons\gn.png" />
+    <Content Include="Resources\Languages\Icons\gp.png" />
+    <Content Include="Resources\Languages\Icons\gq.png" />
+    <Content Include="Resources\Languages\Icons\gr.png" />
+    <Content Include="Resources\Languages\Icons\gs.png" />
+    <Content Include="Resources\Languages\Icons\gt.png" />
+    <Content Include="Resources\Languages\Icons\gu.png" />
+    <Content Include="Resources\Languages\Icons\gw.png" />
+    <Content Include="Resources\Languages\Icons\gy.png" />
+    <Content Include="Resources\Languages\Icons\hk.png" />
+    <Content Include="Resources\Languages\Icons\hm.png" />
+    <Content Include="Resources\Languages\Icons\hn.png" />
+    <Content Include="Resources\Languages\Icons\hr.png" />
+    <Content Include="Resources\Languages\Icons\ht.png" />
+    <Content Include="Resources\Languages\Icons\hu.png" />
+    <Content Include="Resources\Languages\Icons\id.png" />
+    <Content Include="Resources\Languages\Icons\ie.png" />
+    <Content Include="Resources\Languages\Icons\il.png" />
+    <Content Include="Resources\Languages\Icons\in.png" />
+    <Content Include="Resources\Languages\Icons\io.png" />
+    <Content Include="Resources\Languages\Icons\iq.png" />
+    <Content Include="Resources\Languages\Icons\ir.png" />
+    <Content Include="Resources\Languages\Icons\is.png" />
+    <Content Include="Resources\Languages\Icons\it.png" />
+    <Content Include="Resources\Languages\Icons\jm.png" />
+    <Content Include="Resources\Languages\Icons\jo.png" />
+    <Content Include="Resources\Languages\Icons\jp.png" />
+    <Content Include="Resources\Languages\Icons\ke.png" />
+    <Content Include="Resources\Languages\Icons\kg.png" />
+    <Content Include="Resources\Languages\Icons\kh.png" />
+    <Content Include="Resources\Languages\Icons\ki.png" />
+    <Content Include="Resources\Languages\Icons\km.png" />
+    <Content Include="Resources\Languages\Icons\kn.png" />
+    <Content Include="Resources\Languages\Icons\kp.png" />
+    <Content Include="Resources\Languages\Icons\kr.png" />
+    <Content Include="Resources\Languages\Icons\kw.png" />
+    <Content Include="Resources\Languages\Icons\ky.png" />
+    <Content Include="Resources\Languages\Icons\kz.png" />
+    <Content Include="Resources\Languages\Icons\la.png" />
+    <Content Include="Resources\Languages\Icons\lb.png" />
+    <Content Include="Resources\Languages\Icons\lc.png" />
+    <Content Include="Resources\Languages\Icons\li.png" />
+    <Content Include="Resources\Languages\Icons\lk.png" />
+    <Content Include="Resources\Languages\Icons\lr.png" />
+    <Content Include="Resources\Languages\Icons\ls.png" />
+    <Content Include="Resources\Languages\Icons\lt.png" />
+    <Content Include="Resources\Languages\Icons\lu.png" />
+    <Content Include="Resources\Languages\Icons\lv.png" />
+    <Content Include="Resources\Languages\Icons\ly.png" />
+    <Content Include="Resources\Languages\Icons\ma.png" />
+    <Content Include="Resources\Languages\Icons\mc.png" />
+    <Content Include="Resources\Languages\Icons\md.png" />
+    <Content Include="Resources\Languages\Icons\me.png" />
+    <Content Include="Resources\Languages\Icons\mg.png" />
+    <Content Include="Resources\Languages\Icons\mh.png" />
+    <Content Include="Resources\Languages\Icons\mk.png" />
+    <Content Include="Resources\Languages\Icons\ml.png" />
+    <Content Include="Resources\Languages\Icons\mm.png" />
+    <Content Include="Resources\Languages\Icons\mn.png" />
+    <Content Include="Resources\Languages\Icons\mo.png" />
+    <Content Include="Resources\Languages\Icons\mp.png" />
+    <Content Include="Resources\Languages\Icons\mq.png" />
+    <Content Include="Resources\Languages\Icons\mr.png" />
+    <Content Include="Resources\Languages\Icons\ms.png" />
+    <Content Include="Resources\Languages\Icons\mt.png" />
+    <Content Include="Resources\Languages\Icons\mu.png" />
+    <Content Include="Resources\Languages\Icons\mv.png" />
+    <Content Include="Resources\Languages\Icons\mw.png" />
+    <Content Include="Resources\Languages\Icons\mx.png" />
+    <Content Include="Resources\Languages\Icons\my.png" />
+    <Content Include="Resources\Languages\Icons\mz.png" />
+    <Content Include="Resources\Languages\Icons\na.png" />
+    <Content Include="Resources\Languages\Icons\nc.png" />
+    <Content Include="Resources\Languages\Icons\ne.png" />
+    <Content Include="Resources\Languages\Icons\nf.png" />
+    <Content Include="Resources\Languages\Icons\ng.png" />
+    <Content Include="Resources\Languages\Icons\ni.png" />
+    <Content Include="Resources\Languages\Icons\nl.png" />
+    <Content Include="Resources\Languages\Icons\no.png" />
+    <Content Include="Resources\Languages\Icons\np.png" />
+    <Content Include="Resources\Languages\Icons\nr.png" />
+    <Content Include="Resources\Languages\Icons\nu.png" />
+    <Content Include="Resources\Languages\Icons\nz.png" />
+    <Content Include="Resources\Languages\Icons\om.png" />
+    <Content Include="Resources\Languages\Icons\pa.png" />
+    <Content Include="Resources\Languages\Icons\pe.png" />
+    <Content Include="Resources\Languages\Icons\pf.png" />
+    <Content Include="Resources\Languages\Icons\pg.png" />
+    <Content Include="Resources\Languages\Icons\ph.png" />
+    <Content Include="Resources\Languages\Icons\pk.png" />
+    <Content Include="Resources\Languages\Icons\pl.png" />
+    <Content Include="Resources\Languages\Icons\pm.png" />
+    <Content Include="Resources\Languages\Icons\pn.png" />
+    <Content Include="Resources\Languages\Icons\pr.png" />
+    <Content Include="Resources\Languages\Icons\ps.png" />
+    <Content Include="Resources\Languages\Icons\pt.png" />
+    <Content Include="Resources\Languages\Icons\pw.png" />
+    <Content Include="Resources\Languages\Icons\py.png" />
+    <Content Include="Resources\Languages\Icons\qa.png" />
+    <Content Include="Resources\Languages\Icons\re.png" />
+    <Content Include="Resources\Languages\Icons\ro.png" />
+    <Content Include="Resources\Languages\Icons\rs.png" />
+    <Content Include="Resources\Languages\Icons\ru.png" />
+    <Content Include="Resources\Languages\Icons\rw.png" />
+    <Content Include="Resources\Languages\Icons\sa.png" />
+    <Content Include="Resources\Languages\Icons\sb.png" />
+    <Content Include="Resources\Languages\Icons\sc.png" />
+    <Content Include="Resources\Languages\Icons\sd.png" />
+    <Content Include="Resources\Languages\Icons\se.png" />
+    <Content Include="Resources\Languages\Icons\sg.png" />
+    <Content Include="Resources\Languages\Icons\sh.png" />
+    <Content Include="Resources\Languages\Icons\si.png" />
+    <Content Include="Resources\Languages\Icons\sj.png" />
+    <Content Include="Resources\Languages\Icons\sk.png" />
+    <Content Include="Resources\Languages\Icons\sl.png" />
+    <Content Include="Resources\Languages\Icons\sm.png" />
+    <Content Include="Resources\Languages\Icons\sn.png" />
+    <Content Include="Resources\Languages\Icons\so.png" />
+    <Content Include="Resources\Languages\Icons\sr.png" />
+    <Content Include="Resources\Languages\Icons\st.png" />
+    <Content Include="Resources\Languages\Icons\sv.png" />
+    <Content Include="Resources\Languages\Icons\sy.png" />
+    <Content Include="Resources\Languages\Icons\sz.png" />
+    <Content Include="Resources\Languages\Icons\tc.png" />
+    <Content Include="Resources\Languages\Icons\td.png" />
+    <Content Include="Resources\Languages\Icons\tf.png" />
+    <Content Include="Resources\Languages\Icons\tg.png" />
+    <Content Include="Resources\Languages\Icons\th.png" />
+    <Content Include="Resources\Languages\Icons\tj.png" />
+    <Content Include="Resources\Languages\Icons\tk.png" />
+    <Content Include="Resources\Languages\Icons\tl.png" />
+    <Content Include="Resources\Languages\Icons\tm.png" />
+    <Content Include="Resources\Languages\Icons\tn.png" />
+    <Content Include="Resources\Languages\Icons\to.png" />
+    <Content Include="Resources\Languages\Icons\tr.png" />
+    <Content Include="Resources\Languages\Icons\tt.png" />
+    <Content Include="Resources\Languages\Icons\tv.png" />
+    <Content Include="Resources\Languages\Icons\tw.png" />
+    <Content Include="Resources\Languages\Icons\tz.png" />
+    <Content Include="Resources\Languages\Icons\ua.png" />
+    <Content Include="Resources\Languages\Icons\ug.png" />
+    <Content Include="Resources\Languages\Icons\um.png" />
+    <Content Include="Resources\Languages\Icons\us.png" />
+    <Content Include="Resources\Languages\Icons\uy.png" />
+    <Content Include="Resources\Languages\Icons\uz.png" />
+    <Content Include="Resources\Languages\Icons\va.png" />
+    <Content Include="Resources\Languages\Icons\vc.png" />
+    <Content Include="Resources\Languages\Icons\ve.png" />
+    <Content Include="Resources\Languages\Icons\vg.png" />
+    <Content Include="Resources\Languages\Icons\vi.png" />
+    <Content Include="Resources\Languages\Icons\vn.png" />
+    <Content Include="Resources\Languages\Icons\vu.png" />
+    <Content Include="Resources\Languages\Icons\wf.png" />
+    <Content Include="Resources\Languages\Icons\ws.png" />
+    <Content Include="Resources\Languages\Icons\ye.png" />
+    <Content Include="Resources\Languages\Icons\yt.png" />
+    <Content Include="Resources\Languages\Icons\za.png" />
+    <Content Include="Resources\Languages\Icons\zm.png" />
+    <Content Include="Resources\Languages\Icons\zw.png" />
+    <Content Include="Resources\magicfile.ico" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ProgramIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
+    <PackageReference Include="TagLibSharp" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharpKml\SharpKml\SharpKml.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Windows.Forms.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
