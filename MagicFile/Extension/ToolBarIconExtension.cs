@@ -26,6 +26,24 @@ namespace MagicFile.Extension
 		public object UndoIcon { get; private set; }
 		public object RedoIcon { get; private set; }
 
+		#region 规则工具栏按钮...
+
+		public object RuleAddIcon { get; private set; }
+		public object RuleRemoveIcon { get; private set; }
+		public object RuleUpIcon { get; private set; }
+		public object RuleDownIcon { get; private set; }
+
+		#endregion
+
+		#region 文件工具栏按钮...
+
+		public object FileFilterIcon { get; private set; }
+		//public object RuleRemoveIcon { get; private set; }
+		//public object RuleUpIcon { get; private set; }
+		//public object RuleDownIcon { get; private set; }
+
+		#endregion
+
 		public object ItemUpIcon { get; private set; }
 		public object ItemDownIcon { get; private set; }
 		public object ItemSortIcon { get; private set; }
@@ -111,9 +129,14 @@ namespace MagicFile.Extension
 
 				UndoIcon = App.Current.Resources [ "iconUndoButton" ];
 				RedoIcon = App.Current.Resources [ "iconRedoButton" ];
+				// 规则工具栏按钮
+				RuleAddIcon = App.Current.Resources["RuleAddIcon"];
+				RuleRemoveIcon = App.Current.Resources["RuleRemoveIcon"];
+				RuleUpIcon = App.Current.Resources ["RuleUpIcon"];
+				RuleDownIcon = App.Current.Resources ["RuleDownIcon"];
 
-				ItemUpIcon = App.Current.Resources [ "iconItemUp" ];
-				ItemDownIcon = App.Current.Resources [ "iconItemDown" ];
+				FileFilterIcon = App.Current.Resources["FileFilterIcon"];
+
 				ItemSortIcon = App.Current.Resources [ "iconItemSort" ];
 
 				ReplaceTextIcon = App.Current.Resources [ "iconReplaceText" ];

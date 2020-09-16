@@ -74,5 +74,45 @@ namespace MagicFile
         {
 
         }
+
+        private void ToolBar_Loaded(object sender, RoutedEventArgs e)
+        {
+            ToolBar toolBar = sender as ToolBar;
+            FrameworkElement overflowGrid = toolBar.Template.FindName("OverflowGrid", toolBar) as FrameworkElement;
+            if (overflowGrid != null)
+            {
+                overflowGrid.Visibility = Visibility.Collapsed;
+            }
+
+            FrameworkElement mainPanelBorder = toolBar.Template.FindName("MainPanelBorder", toolBar) as FrameworkElement;
+            if (mainPanelBorder != null)
+            {
+                mainPanelBorder.Margin = new Thickness(0);
+            }
+        }
+
+        #region 规则事件...
+
+        private void AddRule_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UpRule_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DownRule_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RemoveRule_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion
     }
 }

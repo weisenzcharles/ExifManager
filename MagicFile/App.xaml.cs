@@ -19,7 +19,7 @@ namespace MagicFile
 
         public App()
         {
-            ProgramHelper.Initialize(Assembly.GetExecutingAssembly(), "daramkun", "DaramRenamer");
+            ProgramHelper.Initialize(Assembly.GetExecutingAssembly(), "Charles", "MagicFile");
             ownLocalizer = new StringTable();
         }
     }
