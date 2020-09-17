@@ -25,6 +25,8 @@ namespace MagicFile.Test
             CopyResource("MagicFile.Test.Data.20191118_092807_4133.jpg", "Data/20191118_092807_4133.jpg");
             CopyResource("MagicFile.Test.Data.20191117_085933_6304.jpg", "Data/20191117_085933_6304.jpg");
             CopyResource("MagicFile.Test.Data.DSC05338.ARW", "Data/DSC05338.ARW");
+            CopyResource("MagicFile.Test.Data.Unbelievable.mp4", "Data/Unbelievable.mp4");
+            CopyResource("MagicFile.Test.Data.TheMan.FLAC", "Data/TheMan.FLAC");
             //KmlFile file = OpenFile("Enter a file to show the placemarks of:");
             //if (file == null)
             //{
@@ -48,7 +50,7 @@ namespace MagicFile.Test
             //    }
             //}
 
-            MetadataTest();
+            ///*MetadataTest*/();
             //var imageFile = ImageFile.FromFile(GetInputFile("", "Data/DSC05338.ARW"));
             //var latTag = imageFile.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSLatitude);
             //var longTag = imageFile.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSLongitude);
@@ -57,6 +59,26 @@ namespace MagicFile.Test
             //imageFile.Properties.Set(ExifTag.ISOSpeedRatings, (ushort)200);
             ////imageFile.Properties.Set(ExifTag.ISOSpeedRatings, (ushort)200);
             ////imageFile.Properties.Set(ExifTag.GPSLongitude, (ushort)200);
+            var tfile = TagLib.File.Create(@"Data/Unbelievable.mp4");
+            string videoTitle = tfile.Tag.Title;
+            System.TimeSpan videoDuration = tfile.Properties.Duration;
+            Console.WriteLine("Video Title: {0}, duration: {1}", videoTitle, videoDuration);
+
+
+            var audioFile = TagLib.File.Create(@"Data/TheMan.FLAC");
+            string audioTitle = audioFile.Tag.Title;
+            System.TimeSpan audioDuration = audioFile.Properties.Duration;
+            Console.WriteLine("Audio Title: {0}, duration: {1}", audioTitle, audioDuration);
+
+
+            var rawFile = TagLib.File.Create(@"Data/DSC05338.ARW");
+            string rawTitle = rawFile.Tag.Title;
+            var tag = rawFile.Tag as TagLib.Image.CombinedImageTag;
+            DateTime? snapshot = tag.DateTime;
+            Console.WriteLine("Raw Title: {0}, snapshot taken on {1}", rawTitle, snapshot);
+
+
+
 
             Console.WriteLine("Hello World!");
         }

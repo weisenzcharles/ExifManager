@@ -105,5 +105,9 @@
     <None Include="Resources\properties_doc_24.png" />
     <None Include="Resources\save_24.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Owl City - Unbelievable.mp4" />
+    <Content Include="Resources\Taylor Swift - The Man.FLAC" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
