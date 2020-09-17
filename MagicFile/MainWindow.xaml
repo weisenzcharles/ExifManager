@@ -7,9 +7,9 @@
         xmlns:dcl="clr-namespace:Daramee.DaramCommonLib"
         xmlns:ext="clr-namespace:MagicFile.Extension"
         mc:Ignorable="d" Icon="Resources/ProgramIcon.ico"
-        Title="{Binding Path=[magic_file]}" Width="750" Height="492"
+        Title="{Binding Path=[magic_file]}" Width="800" Height="600"
 		DataContext="{x:Static dcl:StringTable.SharedStrings}"
-        MinWidth="750" MinHeight="492" Loaded="Window_Loaded"
+        MinWidth="600" MinHeight="400" Loaded="Window_Loaded"
         Activated="Window_Activated" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>

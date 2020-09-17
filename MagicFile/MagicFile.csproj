@@ -18,6 +18,14 @@
 
   <PropertyGroup>
     <ApplicationIcon>Resources\ProgramIcon.ico</ApplicationIcon>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>1.0.0.0</Version>
+    <Authors>Charles Zhang</Authors>
+    <Company>Weisenz Team</Company>
+    <Copyright>Copyright © 2018-2020 Weisenz Team. All Rights Reserved</Copyright>
+    <Description>MagicFile application executable.</Description>
+    <RepositoryUrl>https://github.com/weisenzcharles/MagicFile</RepositoryUrl>
+    <RepositoryType>Github</RepositoryType>
   </PropertyGroup>
 
   <Import Project="..\Library\Daramee.DaramCommonLib.Shared\Daramee.DaramCommonLib.Shared.projitems" Label="Shared" />
