@@ -15,8 +15,6 @@ namespace ATLTest
         {
             OrganizeFile();
 
-
-
             string input = "a.bc...";
             Console.WriteLine(input.Trim('.'));
 
@@ -45,6 +43,65 @@ namespace ATLTest
             //theTrack.AdditionalFields["customField"] = "fancyValue"; // Support for custom fields
             //
             //Console.ReadLine();
+        }
+
+        /// <summary>
+        /// 操作电影。
+        /// </summary>
+        public static void OrganizeMovie()
+        {
+            string rootPath = @"\\192.168.0.199\Video\Movie\死神来了.Final.Destination";
+            var files = Directory.GetFiles(rootPath);
+            int i = 0;
+            foreach (string file in files)
+            {
+                string fileName = Path.GetFileNameWithoutExtension(file);
+                string newName = ReplaceName(fileName);
+                i++;
+                //Console.WriteLine(i.ToString() + " File : " + newName);
+                string dirName = ReplaceDirName(newName);
+                Console.WriteLine(i.ToString() + " Dir : " + dirName);
+                string dirPath = string.Format("{0}\\{1}", @"\\192.168.0.199\Video\003\", dirName);
+                if (!Directory.Exists(dirPath))
+                {
+                    Directory.CreateDirectory(dirPath);
+                }
+                string newFileName = string.Format("{0}\\{1}{2}", dirPath, newName, Path.GetExtension(file).ToLower());
+                File.Move(file, newFileName);
+
+                //Console.WriteLine("File : " + fileName + " || " + newName);
+            }
+        }
+        /// <summary>
+        /// 格式化并替换字符。
+        /// </summary>
+        /// <param name="input">要搜索匹配项的字符串。</param>
+        /// <returns></returns>
+        public static string ReplaceName(string input)
+        {
+
+            //input = input.Replace(" (", "「").Replace("(", "「").Replace(")", "」").Replace("（", "「").Replace("）", "」").Replace(" [", "「").Replace("[", "「").Replace("]", "」");
+
+            string pattern = "([\u0800-\ud7ff]+\\.)";
+            var match = Regex.Match(input, pattern);
+            //string output = Regex.Replace(input, pattern, "");
+
+            string output = match.Value + input.Replace(match.Value, "");
+
+            //string pattern2 = "([\u0800-\ud7ff]+\\.)([a-zA-Z\\.]+\\.)([0-9]+)";
+            //var match2 = Regex.Match(output, pattern2);
+            //output = Regex.Replace(output, "([\u0800-\ud7ff_a-zA-Z]+)([0-9])", "$1 $2");
+            //output = output.Replace(" (", "「").Replace("(", "「").Replace(")", "」");
+            return output;
+        }
+
+        public static string ReplaceDirName(string input)
+        {
+            string pattern = "([\u0800-\ud7ff]+\\.)([a-zA-Z\\.]+\\.)([0-9]+)";
+            var match = Regex.Match(input, pattern);
+
+            string output = match.Value;
+            return output;
         }
 
         /// <summary>
