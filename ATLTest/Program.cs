@@ -180,7 +180,7 @@ namespace ATLTest
                         Console.WriteLine("Duration : " + theTrack.DurationMs);
 
                     }
-                    string newFileName = string.Format("{0}\\{1}{2}", @"D:\Users\Charles Zhang\Documents\MuMu共享文件夹\音乐\000", Path.GetFileNameWithoutExtension(file), Path.GetExtension(file).ToLower());
+                    string newFileName = string.Format("{0}\\{1}{2}", @"D:\Users\Charles Zhang\Documents\MuMu共享文件夹\音乐\Backup", Path.GetFileNameWithoutExtension(file), Path.GetExtension(file).ToLower());
                     if (!File.Exists(newFileName))
                     {
                         File.Move(file, newFileName);
