@@ -318,7 +318,7 @@ namespace ATLTest
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -345,7 +345,9 @@ namespace ATLTest
             using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name))
             {
                 using (FileStream file = File.OpenWrite(destination))
-                { }
+                {
+                
+                }
             }
 
         }
