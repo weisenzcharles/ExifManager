@@ -278,7 +278,7 @@ namespace ExifTools
             {
                 if (isModifyTime)
                 {
-                    DateTime dateTime = new DateTime();
+                    DateTime dateTime = new();
                     if (modifyTimeType)
                     {
                         dateTime = exif.DateTimeOriginal.AddHours(hout).AddMinutes(minute).AddSeconds(second);
@@ -319,8 +319,8 @@ namespace ExifTools
             {
                 OutputPath = folderBrowserDialog.SelectedPath;
                 txtOutputPath.Text = OutputPath;
-                rtxLogs.AppendText(string.Format("已选择输入路径：{0}\n", InputPath));
-                Log4NetHelper.Info(string.Format("已选择输入路径：{0}\n", InputPath));
+                rtxLogs.AppendText(string.Format("已选择输出路径：{0}\n", OutputPath));
+                Log4NetHelper.Info(string.Format("已选择输出路径：{0}\n", OutputPath));
             }
         }
 

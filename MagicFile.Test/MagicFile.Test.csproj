@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Platforms>AnyCPU;ARM64</Platforms>
   </PropertyGroup>
 
@@ -32,14 +32,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="TagLibSharp" Version="2.2.0" />
-    <PackageReference Include="z440.atl.core" Version="3.10.0" />
+    <PackageReference Include="z440.atl.core" Version="4.8.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExifLibrary\ExifLibrary\ExifLibrary.csproj" />
-    <ProjectReference Include="..\MetadataExtractor\MetadataExtractor\MetadataExtractor.csproj" />
-    <ProjectReference Include="..\SharpKml\SharpKml\SharpKml.Core.csproj" />
+    <ProjectReference Include="..\Library\ExifLibrary\ExifLibrary\ExifLibrary.csproj" />
+    <ProjectReference Include="..\Library\MetadataExtractor\MetadataExtractor.Resources\MetadataExtractor.Resources.csproj" />
+    <ProjectReference Include="..\Library\MetadataExtractor\MetadataExtractor\MetadataExtractor.csproj" />
+    <ProjectReference Include="..\Library\SharpKml\SharpKml.Core.csproj" />
   </ItemGroup>
 
 </Project>

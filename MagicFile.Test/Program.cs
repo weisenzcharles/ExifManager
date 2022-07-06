@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using ExifLibrary;
-using System.Reflection.Metadata.Ecma335;
 using MetadataExtractor;
 using MetadataExtractor.Formats.QuickTime;
 using MetadataExtractor.Formats.Exif;

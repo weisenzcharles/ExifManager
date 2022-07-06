@@ -306,13 +306,9 @@
 
   <ItemGroup>
     <PackageReference Include="Jint" Version="2.11.58" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="3.1.8" />
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="3.1.26" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="TagLibSharp" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SharpKml\SharpKml\SharpKml.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
