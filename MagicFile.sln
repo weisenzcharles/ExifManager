@@ -43,8 +43,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicFile.Tools", "MagicFil
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpKml.Core", "Library\SharpKml\SharpKml.Core.csproj", "{A9C09381-8BE7-4908-8A5E-E682D1491E5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -183,18 +181,6 @@ Global
 		{A9C09381-8BE7-4908-8A5E-E682D1491E5C}.Release|ARM64.Build.0 = Release|Any CPU
 		{A9C09381-8BE7-4908-8A5E-E682D1491E5C}.Release|x64.ActiveCfg = Release|Any CPU
 		{A9C09381-8BE7-4908-8A5E-E682D1491E5C}.Release|x64.Build.0 = Release|Any CPU
-		{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}.Debug|x64.Build.0 = Debug|Any CPU
-		{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}.Release|ARM64.Build.0 = Release|Any CPU
-		{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}.Release|x64.ActiveCfg = Release|Any CPU
-		{22B8977A-8252-4536-B9BF-C8AAD2CA1CCD}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
