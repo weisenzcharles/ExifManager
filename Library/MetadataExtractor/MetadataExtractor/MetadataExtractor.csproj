@@ -10,7 +10,7 @@
       Camera manufacturer specific support exists for Agfa, Canon, Casio, DJI, Epson, Fujifilm, Kodak, Kyocera, Leica, Minolta, Nikon, Olympus, Panasonic, Pentax, Reconyx, Sanyo, Sigma/Foveon and Sony models.
     </Description>
     <AssemblyTitle>Metadata Extractor</AssemblyTitle>
-    <TargetFrameworks>netstandard1.3;netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net45</TargetFrameworks>
     <NoWarn>$(NoWarn);1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>MetadataExtractor</PackageId>
@@ -47,6 +47,10 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>
