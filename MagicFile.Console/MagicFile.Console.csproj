@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>MagicFile</AssemblyName>
     <Authors>Charles Zhang</Authors>
     <Company>Weisenz Team</Company>
     <Copyright>Copyright © 2018-2019 Weisenz Team. All Rights Reserved</Copyright>
     <ApplicationIcon />
     <StartupObject />
+    <Platforms>AnyCPU;ARM64</Platforms>
   </PropertyGroup>
 
 </Project>

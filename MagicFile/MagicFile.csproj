@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\ProgramIcon.ico</ApplicationIcon>
   </PropertyGroup>
@@ -35,6 +35,10 @@
   <Import Project="..\Library\Daramee.Nargs.Shared\Daramee.Nargs.Shared.projitems" Label="Shared" />
 
   <Import Project="..\Library\Daramee.Winston.Shared\Daramee.Winston.Shared.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <Compile Remove="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Strings.json" />
@@ -319,7 +323,21 @@
 
   <ItemGroup>
     <Folder Include="Extension\" />
-    <Folder Include="Presets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -15,57 +15,61 @@ namespace Daramee.DaramCommonLib
 	{
 		[NonSerialized]
 		BinaryFormatter bf = new BinaryFormatter ();
-		Stack<byte []> undoStack = new Stack<byte []> ();
-		Stack<byte []> redoStack = new Stack<byte []> ();
+		Stack<byte[]> undoStack = new Stack<byte[]> ();
+		Stack<byte[]> redoStack = new Stack<byte[]> ();
 
 		public event EventHandler UpdateUndo, UpdateRedo;
 
 		public bool IsUndoStackEmpty { get { return undoStack.Count == 0; } }
 		public bool IsRedoStackEmpty { get { return redoStack.Count == 0; } }
 
-		public void SaveToUndoStack ( T fileInfoCollection, bool clearRedoStack = true, [CallerMemberName] string caller = "", [CallerLineNumber] int line = 0 )
+		public void SaveToUndoStack (T fileInfoCollection, bool clearRedoStack = true, [CallerMemberName] string caller = "", [CallerLineNumber] int line = 0)
 		{
-			using ( MemoryStream memStream = new MemoryStream () )
-			{
-				bf.Serialize ( memStream, fileInfoCollection ?? throw new ArgumentNullException () );
-				undoStack.Push ( memStream.ToArray () );
+			using (MemoryStream memStream = new MemoryStream ()) {
+#pragma warning disable SYSLIB0011 // 类型或成员已过时
+				bf.Serialize (memStream, fileInfoCollection ?? throw new ArgumentNullException ());
+#pragma warning restore SYSLIB0011 // 类型或成员已过时
+				undoStack.Push (memStream.ToArray ());
 			}
 
-			if ( clearRedoStack )
+			if (clearRedoStack)
 				ClearRedoStack ();
 
-			UpdateUndo?.Invoke ( this, EventArgs.Empty );
+			UpdateUndo?.Invoke (this, EventArgs.Empty);
 		}
 
-		public void SaveToRedoStack ( T fileInfoCollection, [CallerMemberName] string caller = "", [CallerLineNumber] int line = 0 )
+		public void SaveToRedoStack (T fileInfoCollection, [CallerMemberName] string caller = "", [CallerLineNumber] int line = 0)
 		{
-			using ( MemoryStream memStream = new MemoryStream () )
-			{
-				bf.Serialize ( memStream, fileInfoCollection ?? throw new ArgumentNullException () );
-				redoStack.Push ( memStream.ToArray () );
+			using (MemoryStream memStream = new MemoryStream ()) {
+#pragma warning disable SYSLIB0011 // 类型或成员已过时
+				bf.Serialize (memStream, fileInfoCollection ?? throw new ArgumentNullException ());
+#pragma warning restore SYSLIB0011 // 类型或成员已过时
+				redoStack.Push (memStream.ToArray ());
 			}
 
-			UpdateRedo?.Invoke ( this, EventArgs.Empty );
+			UpdateRedo?.Invoke (this, EventArgs.Empty);
 		}
 
 		public T LoadFromUndoStack ()
 		{
-			if ( IsUndoStackEmpty ) return null;
-			using ( MemoryStream memStream = new MemoryStream ( undoStack.Pop () ) )
-			{
-				var ret = bf.Deserialize ( memStream ) as T ?? throw new InvalidCastException ();
-				UpdateUndo?.Invoke ( this, EventArgs.Empty );
+			if (IsUndoStackEmpty) return null;
+			using (MemoryStream memStream = new MemoryStream (undoStack.Pop ())) {
+#pragma warning disable SYSLIB0011 // 类型或成员已过时
+				var ret = bf.Deserialize (memStream) as T ?? throw new InvalidCastException ();
+#pragma warning restore SYSLIB0011 // 类型或成员已过时
+				UpdateUndo?.Invoke (this, EventArgs.Empty);
 				return ret;
 			}
 		}
 
 		public T LoadFromRedoStack ()
 		{
-			if ( IsRedoStackEmpty ) return null;
-			using ( MemoryStream memStream = new MemoryStream ( redoStack.Pop () ) )
-			{
-				var ret = bf.Deserialize ( memStream ) as T ?? throw new InvalidCastException ();
-				UpdateRedo?.Invoke ( this, EventArgs.Empty );
+			if (IsRedoStackEmpty) return null;
+			using (MemoryStream memStream = new MemoryStream (redoStack.Pop ())) {
+#pragma warning disable SYSLIB0011 // 类型或成员已过时
+				var ret = bf.Deserialize (memStream) as T ?? throw new InvalidCastException ();
+#pragma warning restore SYSLIB0011 // 类型或成员已过时
+				UpdateRedo?.Invoke (this, EventArgs.Empty);
 				return ret;
 			}
 		}
