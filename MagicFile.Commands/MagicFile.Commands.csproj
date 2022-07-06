@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>MagicFile</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Version>1.0.0.0</Version>
+    <Authors>Charles Zhang</Authors>
+    <Company>Weisenz</Company>
+    <Product>MagicFile Command</Product>
+  </PropertyGroup>
+
+  <!--<Import Project="..\Modules\FileTypeDetector\Daramee.FileTypeDetector.Shared\Daramee.FileTypeDetector.Shared.projitems" Label="Shared" />-->
+
+  <Import Project="..\Library\Daramee.FileTypeDetector.Shared\Daramee.FileTypeDetector.Shared.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="TagLibSharp" Version="2.2.0" />
+  </ItemGroup>
+
+</Project>

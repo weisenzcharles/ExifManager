@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\ProgramIcon.ico</ApplicationIcon>
   </PropertyGroup>
@@ -18,6 +18,14 @@
 
   <PropertyGroup>
     <ApplicationIcon>Resources\ProgramIcon.ico</ApplicationIcon>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>1.0.0.0</Version>
+    <Authors>Charles Zhang</Authors>
+    <Company>Weisenz Team</Company>
+    <Copyright>Copyright © 2018-2020 Weisenz Team. All Rights Reserved</Copyright>
+    <Description>MagicFile application executable.</Description>
+    <RepositoryUrl>https://github.com/weisenzcharles/MagicFile</RepositoryUrl>
+    <RepositoryType>Github</RepositoryType>
   </PropertyGroup>
 
   <Import Project="..\Library\Daramee.DaramCommonLib.Shared\Daramee.DaramCommonLib.Shared.projitems" Label="Shared" />
@@ -27,6 +35,10 @@
   <Import Project="..\Library\Daramee.Nargs.Shared\Daramee.Nargs.Shared.projitems" Label="Shared" />
 
   <Import Project="..\Library\Daramee.Winston.Shared\Daramee.Winston.Shared.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <Compile Remove="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Strings.json" />
@@ -294,13 +306,9 @@
 
   <ItemGroup>
     <PackageReference Include="Jint" Version="2.11.58" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="3.1.8" />
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="3.1.26" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="TagLibSharp" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SharpKml\SharpKml\SharpKml.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -311,7 +319,21 @@
 
   <ItemGroup>
     <Folder Include="Extension\" />
-    <Folder Include="Presets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

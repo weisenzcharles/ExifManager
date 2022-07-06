@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
+    <Platforms>AnyCPU;ARM64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +11,17 @@
     <None Remove="Data\20191117_085933_6304.jpg" />
     <None Remove="Data\20191118_092807_4133.jpg" />
     <None Remove="Data\DSC05338.ARW" />
+    <None Remove="Data\TheMan.FLAC" />
+    <None Remove="Data\Unbelievable.mp4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Unbelievable.mp4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\TheMan.FLAC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -20,13 +32,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="z440.atl.core" Version="3.7.0" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="TagLibSharp" Version="2.2.0" />
+    <PackageReference Include="z440.atl.core" Version="4.8.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExifLibrary\ExifLibrary\ExifLibrary.csproj" />
-    <ProjectReference Include="..\MetadataExtractor\MetadataExtractor\MetadataExtractor.csproj" />
-    <ProjectReference Include="..\SharpKml\SharpKml\SharpKml.Core.csproj" />
+    <ProjectReference Include="..\Library\ExifLibrary\ExifLibrary\ExifLibrary.csproj" />
+    <ProjectReference Include="..\Library\MetadataExtractor\MetadataExtractor.Resources\MetadataExtractor.Resources.csproj" />
+    <ProjectReference Include="..\Library\MetadataExtractor\MetadataExtractor\MetadataExtractor.csproj" />
+    <ProjectReference Include="..\Library\SharpKml\SharpKml.Core.csproj" />
   </ItemGroup>
 
 </Project>
