@@ -18,7 +18,6 @@
 		<PackageReference Include="z440.atl.core" Version="4.8.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Library\MetadataExtractor\MetadataExtractor.Resources\MetadataExtractor.Resources.csproj" />
 		<ProjectReference Include="..\Library\MetadataExtractor\MetadataExtractor\MetadataExtractor.csproj" />
 		<ProjectReference Include="..\Library\SharpKml\SharpKml.Core.csproj" />
 	</ItemGroup>

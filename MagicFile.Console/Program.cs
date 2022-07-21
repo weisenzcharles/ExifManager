@@ -116,19 +116,101 @@ namespace MagicFile
             return GetTimeName(fileInfo);
         }
 
+        //static void Main(string[] args)
+        //{
+
+        //    string path = @"\\192.168.0.199\Photo\2023\DJI Album";
+        //    OrganizeMedia(path);
+        //}
         static void Main(string[] args)
         {
+            PrintMenu();
+            while (true)
+            {
+                Console.Write("选择你要执行的功能模块：");
+                var command = Console.ReadLine();
+                Console.WriteLine();
 
-            string path = @"\\192.168.0.199\Photo\2023\DJI Album";
+                if (command == "1" && Confirm())
+                {
+                    Console.WriteLine("正在执行中......");
+                    Console.WriteLine("请输入一个路径：");
+                    string path = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        MusicOrganize.Organize(path);
+                    }
+                    Console.WriteLine("执行结束");
+                }
+                else if (command == "2" && Confirm())
+                {
+                }
+                //else if (command == "3" && Confirm())
+                //{
 
-            DirectoryInfo directoryInfo = new DirectoryInfo(path);
+                //}
+                else if (command == "q")
+                {
+                    Environment.Exit(0);
+                }
+                PrintMenu();
+            }
+
+        }
+        static bool Confirm()
+        {
+            Console.WriteLine("是否确认执行此操作? ");
+            Console.WriteLine("确认请输入[Y]，按任意键返回菜单");
+            var key = Console.ReadKey();
+            Console.WriteLine("");
+            if (key.KeyChar.ToString().ToUpper() == "Y")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 打印菜单。
+        /// </summary>
+        static void PrintMenu()
+        {
+            Console.WriteLine("----------------------------------------------------------------------------");
+            Console.WriteLine("------------------------- MagicFile Console v1.0.0 -------------------------");
+            Console.WriteLine("1、根据歌手整理音乐文件信息");
+            Console.WriteLine("2、根据专辑整理音乐文件信息");
+            Console.WriteLine("3、整理视频文件信息");
+            //Console.WriteLine("3、整理图片文件信息");
+            Console.WriteLine("2、自动根据元数据整理文件");
+            Console.WriteLine("q、退出");
+            Console.WriteLine("----------------------------------------------------------------------------");
+        }
+
+        private static void OrganizeMedia()
+        {
+            Console.WriteLine("请输入一个路径：");
+            string path = Console.ReadLine();
+            if (!string.IsNullOrEmpty(path))
+            {
+                OrganizeMedia(path);
+            }
+
+        }
+
+        private static void OrganizeMedia(string path)
+        {
+
+            DirectoryInfo directoryInfo = new(path);
 
             var files = directoryInfo.GetFiles();
 
 
             foreach (var file in files)
             {
-                Regex regex = new Regex(@"(\d{8})_(\d{6})_(\d{4})");
+                Regex regex = new(@"(\d{8})_(\d{6})_(\d{4})");
                 if (regex.IsMatch(file.Name))
                 {
                     continue;
@@ -233,8 +315,6 @@ namespace MagicFile
             Console.WriteLine("整理完毕！");
         }
 
-
-
         private static void MetadataTest()
         {
             IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata("Data/DSC05338.ARW");
@@ -251,10 +331,8 @@ namespace MagicFile
             KmlFile file;
             try
             {
-                using (FileStream stream = File.Open(filename, FileMode.Open))
-                {
-                    file = KmlFile.Load(stream);
-                }
+                using FileStream stream = File.Open(filename, FileMode.Open);
+                file = KmlFile.Load(stream);
             }
             catch (Exception ex)
             {
@@ -299,6 +377,7 @@ namespace MagicFile
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(message);
         }
+
         private static void ExtractPlacemarks(Feature feature, List<Placemark> placemarks)
         {
             // Is the passed in value a Placemark?
@@ -320,52 +399,6 @@ namespace MagicFile
             }
         }
 
-        //static void Main(string[] args)
-        //{
-        //    PrintMenu();
-        //    while (true)
-        //    {
-        //        Console.Write("选择你要执行的功能模块：");
-        //        var command = Console.ReadLine();
-        //        Console.WriteLine();
 
-        //        if (command == "1" && Confirm())
-        //        {
-        //            Console.WriteLine("正在执行中......");
-
-        //            Console.WriteLine("执行结束");
-        //            PrintMenu();
-        //        }
-        //    }
-
-        //}
-        //static bool Confirm()
-        //{
-        //    Console.WriteLine("是否确认执行此操作? ");
-        //    Console.WriteLine("确认请输入[Y]，按任意键返回菜单");
-        //    var key = Console.ReadKey();
-        //    Console.WriteLine("");
-        //    if (key.KeyChar.ToString().ToUpper() == "Y")
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-        ///// <summary>
-        ///// 打印菜单。
-        ///// </summary>
-        //static void PrintMenu()
-        //{
-        //    Console.WriteLine("---------------------------------------------------------------------------");
-        //    Console.WriteLine("---------------------------- MagicFile v1.0.1 -----------------------------");
-        //    Console.WriteLine("1、自动处理文件信息");
-        //    Console.WriteLine("2、手动处理文件信息");
-        //    Console.WriteLine("3、手动校准文件元数据");
-        //    Console.WriteLine("4、自动根据元数据命名文件");
-        //    Console.WriteLine("---------------------------------------------------------------------------");
-        //}
     }
 }
