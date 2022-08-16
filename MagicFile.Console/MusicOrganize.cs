@@ -10,39 +10,83 @@ using ATL.AudioData;
 
 namespace MagicFile
 {
+    public enum OrganizeMode
+    {
+        /// <summary>
+        /// 按艺术家。
+        /// </summary>
+        ByArtist,
+        /// <summary>
+        /// 按专辑。
+        /// </summary>
+        ByAlbum,
+    }
+
     public class MusicOrganize
     {
 
 
+        public static List<string> GetDirectoryFiles(string dirPath, string[] excludePaths = null)
+        {
+            List<string> files = new();
+            DirectoryInfo directoryInfo = new(dirPath);
+            FileInfo[] fileInfos = directoryInfo.GetFiles();    // 文件
+            DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();   // 文件夹
+            foreach (FileInfo fileInfo in fileInfos)
+            {
+                files.Add(fileInfo.FullName);
+            }
+            // 获取子文件夹内的文件列表，递归遍历  
+            foreach (DirectoryInfo info in directoryInfos)
+            {
+                if (excludePaths == null || !excludePaths.Contains(info.FullName))
+                {
+                    files.AddRange(GetDirectoryFiles(info.FullName));
+                }
+            }
+            return files;
+        }
+
         /// <summary>
         /// 整理文件。
         /// </summary>
-        public static void Organize(string path)
+        public static void Organize(string path, OrganizeMode mode)
         {
 
             #region 文件管理...
 
-            Dictionary<string, string> albumsLocal = new Dictionary<string, string>();
+            Dictionary<string, string> albumsLocal = new();
 
             string rootPath = string.Format(@"{0}", path);
-            string artistDirectory = string.Format(@"{0}\Artist", path);
-            Directory.CreateDirectory(artistDirectory);
 
-            //Directory.GetDirectories()
+            string outputDirectory = string.Format(@"{0}\Output", path);
+            Directory.CreateDirectory(outputDirectory);
 
-            var files = Directory.GetFiles(rootPath);
+            string backupPath = string.Format(@"{0}\Backup", path);
+            Directory.CreateDirectory(backupPath);
+            var excludePaths = new List<string>() { outputDirectory, backupPath }.ToArray();
+            var files = GetDirectoryFiles(rootPath, excludePaths);
 
             foreach (string file in files)
             {
                 Console.WriteLine("File : " + file);
                 if (Path.GetExtension(file).ToLower().Equals(".mp3") || Path.GetExtension(file).ToLower().Equals(".flac"))
                 {
-                    Track theTrack = new Track(file);
+                    var lrcFile = string.Format(@"{0}\{1}.lrc", Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file));
+                    var existedLrc = File.Exists(lrcFile);
+                    Track theTrack = new(file);
                     if (theTrack != null && !string.IsNullOrEmpty(theTrack.Title))
                     {
-                        string artistPath = string.Format(@"{0}\{1}", artistDirectory, theTrack.Artist.Trim());
-                        string albumPath = string.Format(@"{0}\{1}\{2}", artistDirectory, theTrack.Artist.Trim(), RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim())));
-
+                        // 艺术家路径
+                        string artistPath = string.Format(@"{0}\{1}", outputDirectory, theTrack.Artist.Trim());
+                        // 专辑路径
+                        string albumPath = string.Empty;
+                        albumPath = mode switch
+                        {
+                            OrganizeMode.ByArtist => string.Format(@"{0}\{1}\{2}", outputDirectory, theTrack.Artist.Trim(), RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim()))),
+                            OrganizeMode.ByAlbum => string.Format(@"{0}\{1}", outputDirectory, RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim()))),
+                            _ => string.Format(@"{0}\{1}\{2}", outputDirectory, theTrack.Artist.Trim(), RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim()))),
+                        };
                         string fileName = Path.GetFileNameWithoutExtension(file);
                         if (fileName.Split('-').Length > 1)
                         {
@@ -51,7 +95,7 @@ namespace MagicFile
                             var artists = songArtist.Replace(",", "、").Replace("&", "、").Split('、');
                             if (artists.Length > 1)
                             {
-                                albumPath = string.Format(@"{0}\{1}\{2}", artistDirectory, artists[0].Trim(), RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim())));
+                                //albumPath = string.Format(@"{0}\{1}\{2}", outputDirectory, artists[0].Trim(), RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim())));
                                 foreach (var artist in artists)
                                 {
                                     theTrack.Title = ReplaceFormat(theTrack.Title.Trim());
@@ -63,7 +107,14 @@ namespace MagicFile
                                         Directory.CreateDirectory(albumPath);
                                     }
                                     var destFileName = string.Format("{0}\\{1} - {2}{3}", albumPath, artist.Trim(), songTitle, Path.GetExtension(file).ToLower());
+                                    Console.WriteLine("New Loaction : " + destFileName);
                                     CopyFile(file, destFileName);
+                                    if (existedLrc)
+                                    {
+                                        var destLrcName = string.Format("{0}\\{1} - {2}{3}", albumPath, artist.Trim(), songTitle, ".lrc");
+                                        Console.WriteLine("New Lrc Loaction : " + destLrcName);
+                                        CopyFile(lrcFile, destLrcName);
+                                    }
                                 }
                             }
                             else
@@ -78,18 +129,19 @@ namespace MagicFile
                                 theTrack.Save();
 
                                 var destFileName = string.Format("{0}\\{1} - {2}{3}", albumPath, songArtist, songTitle, Path.GetExtension(file).ToLower());
+                                Console.WriteLine("New Loaction : " + destFileName);
                                 CopyFile(file, destFileName);
+                                if (existedLrc)
+                                {
+                                    var destLrcName = string.Format("{0}\\{1} - {2}{3}{4}", albumPath, songArtist, songTitle, songTitle, ".lrc");
+                                    Console.WriteLine("New Lrc Loaction : " + destLrcName);
+                                    CopyFile(lrcFile, destLrcName);
+                                }
                             }
                         }
-                        Console.WriteLine("Title : " + theTrack.Title);
-                        Console.WriteLine("Album : " + theTrack.Album);
-                        Console.WriteLine("Artist : " + theTrack.Artist);
-                        Console.WriteLine("Description : " + theTrack.Description);
-                        Console.WriteLine("Duration : " + theTrack.DurationMs);
 
                     }
-                    string backupPath = string.Format(@"{0}\Backup", path);
-                    Directory.CreateDirectory(backupPath);
+
                     string newFileName = string.Format("{0}\\{1}{2}", backupPath, Path.GetFileNameWithoutExtension(file), Path.GetExtension(file).ToLower());
                     if (!File.Exists(newFileName))
                     {
@@ -145,6 +197,35 @@ namespace MagicFile
 
         }
 
+        private readonly static Dictionary<int, string> numMapping_reverse = new()
+        {
+             { 1, "一" },
+             { 2, "二" },
+             { 3, "三" },
+             { 4, "四" },
+             { 5, "五" },
+             { 6, "六" },
+             { 7, "七" },
+             { 8, "八" },
+             { 9, "九" },
+             { 0, "零" }
+        };
+
+        public static string ReplaceNumber(string input)
+        {
+            string output = input;
+            string pattern = ".*[0-9]{1,}.*";
+            Regex regex = new(pattern);
+            if (regex.IsMatch(input))
+            {
+                foreach (var pair in numMapping_reverse)
+                {
+                    output = output.Replace(pair.Key.ToString(), pair.Value);
+                }
+            }
+            return output;
+        }
+
         /// <summary>
         /// 移除非法字符。
         /// </summary>
@@ -162,8 +243,7 @@ namespace MagicFile
         /// <returns></returns>
         public static string ReplaceFormat(string input)
         {
-
-            input = input.Replace(" (", "「").Replace("(", "「").Replace(")", "」").Replace("（", "「").Replace("）", "」").Replace(" [", "「").Replace("[", "「").Replace("]", "」");
+            input = ReplaceNumber(input).Replace(" (", "「").Replace("(", "「").Replace(")", "」").Replace("（", "「").Replace("）", "」").Replace(" [", "「").Replace("[", "「").Replace("]", "」");
 
             string pattern = "([0-9])([\u0800-\ud7ff_a-zA-Z]+)";
             string output = Regex.Replace(input, pattern, "$1 $2");
@@ -173,7 +253,7 @@ namespace MagicFile
         }
 
         /// <summary>
-        ///  将现有文件复制到新文件。 允许覆盖同名的文件。
+        ///  将现有文件复制到新文件。允许覆盖同名的文件。
         /// </summary>
         /// <param name="sourceFileName">要复制的文件。</param>
         /// <param name="destFileName">目标文件的名称。 不能是目录。</param>

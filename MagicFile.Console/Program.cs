@@ -116,12 +116,6 @@ namespace MagicFile
             return GetTimeName(fileInfo);
         }
 
-        //static void Main(string[] args)
-        //{
-
-        //    string path = @"\\192.168.0.199\Photo\2023\DJI Album";
-        //    OrganizeMedia(path);
-        //}
         static void Main(string[] args)
         {
             PrintMenu();
@@ -131,24 +125,38 @@ namespace MagicFile
                 var command = Console.ReadLine();
                 Console.WriteLine();
 
-                if (command == "1" && Confirm())
+                if (command == "1")
                 {
-                    Console.WriteLine("正在执行中......");
+
                     Console.WriteLine("请输入一个路径：");
                     string path = Console.ReadLine();
                     if (!string.IsNullOrEmpty(path))
                     {
-                        MusicOrganize.Organize(path);
+                        Console.WriteLine("正在执行中......");
+                        MusicOrganize.Organize(path, OrganizeMode.ByArtist);
+                        Console.WriteLine("执行结束");
                     }
-                    Console.WriteLine("执行结束");
-                }
-                else if (command == "2" && Confirm())
-                {
-                }
-                //else if (command == "3" && Confirm())
-                //{
 
-                //}
+                }
+                else if (command == "2")
+                {
+                    Console.WriteLine("正在执行中......");
+                    string path = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        Console.WriteLine("请输入一个路径：");
+                        MusicOrganize.Organize(path, OrganizeMode.ByAlbum);
+                        Console.WriteLine("执行结束");
+                    }
+                }
+                else if (command == "3")
+                {
+
+                }
+                else if (command == "4")
+                {
+                    OrganizeMedia();
+                }
                 else if (command == "q")
                 {
                     Environment.Exit(0);
@@ -183,8 +191,7 @@ namespace MagicFile
             Console.WriteLine("1、根据歌手整理音乐文件信息");
             Console.WriteLine("2、根据专辑整理音乐文件信息");
             Console.WriteLine("3、整理视频文件信息");
-            //Console.WriteLine("3、整理图片文件信息");
-            Console.WriteLine("2、自动根据元数据整理文件");
+            Console.WriteLine("4、自动根据元数据整理文件");
             Console.WriteLine("q、退出");
             Console.WriteLine("----------------------------------------------------------------------------");
         }
@@ -243,8 +250,41 @@ namespace MagicFile
                         filename = created.ToString("yyyyMMdd_HHmmss_ffff");
                     }
                     destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
-                }
+                    if (File.Exists(destFileName))
+                    {
+                        filename = filename.Substring(0, 16) + new Random().Next(1000, 9999);
+                        destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                    }
 
+                }
+                else if (file.Extension.ToLower().Equals(".heic"))
+                {
+                    var directories = ImageMetadataReader.ReadMetadata(file.FullName);
+
+                    var fileDirectory = directories.Where(d => d.Name == "File").FirstOrDefault();
+                    var tags = fileDirectory.Tags;
+
+                    var dateTime = fileDirectory?.GetDateTime(QuickTimeMovieHeaderDirectory.TagCreated);
+
+                    var created = fileDirectory?.GetDateTime(QuickTimeMovieHeaderDirectory.TagCreated);
+                    var modified = fileDirectory.ContainsTag(QuickTimeMovieHeaderDirectory.TagModified) ? fileDirectory?.GetDateTime(QuickTimeMovieHeaderDirectory.TagModified) : dateTime;
+
+                    var filename = string.Empty;
+                    if (created >= modified)
+                    {
+                        filename = modified?.ToString("yyyyMMdd_HHmmss_ffff");
+                    }
+                    else
+                    {
+                        filename = created?.ToString("yyyyMMdd_HHmmss_ffff");
+                    }
+                    destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                    if (File.Exists(destFileName))
+                    {
+                        filename = filename.Substring(0, 16) + new Random().Next(1000, 9999);
+                        destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                    }
+                }
                 else if (file.Extension.ToLower().Equals(".dng"))
                 {
                     var directories = ImageMetadataReader.ReadMetadata(file.FullName);
@@ -268,6 +308,11 @@ namespace MagicFile
                     filename = datetime?.ToString("yyyyMMdd_HHmmss_ffff");
 
                     destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                    if (File.Exists(destFileName))
+                    {
+                        filename = filename.Substring(0, 16) + new Random().Next(1000, 9999);
+                        destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                    }
                 }
                 else
                 {
@@ -279,12 +324,15 @@ namespace MagicFile
                     {
                         destFileName = RenamePhoto(file, mediaFile);
                     }
+                    else if (fileTag.TagTypes is TagLib.TagTypes.Apple)
+                    {
+                        destFileName = RenameVideo(file, mediaFile);
+                    }
                     else
                     {
                         var properties = mediaFile.Properties;
 
                         var mediaTypes = properties.MediaTypes;
-
 
                         switch (mediaTypes)
                         {
