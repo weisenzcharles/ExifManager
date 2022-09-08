@@ -1,47 +1,55 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
-    <Platforms>AnyCPU;ARM64</Platforms>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Data\20191114.kml" />
-    <None Remove="Data\20191117_085933_6304.jpg" />
-    <None Remove="Data\20191118_092807_4133.jpg" />
-    <None Remove="Data\DSC05338.ARW" />
-    <None Remove="Data\TheMan.FLAC" />
-    <None Remove="Data\Unbelievable.mp4" />
-  </ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="Program.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Data\Unbelievable.mp4">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Data\TheMan.FLAC">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Data\20191114.kml" />
+		<None Remove="Data\20191117_085933_6304.jpg" />
+		<None Remove="Data\20191118_092807_4133.jpg" />
+		<None Remove="Data\DSC05338.ARW" />
+		<None Remove="Data\TheMan.FLAC" />
+		<None Remove="Data\Unbelievable.mp4" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Data\20191114.kml" />
-    <EmbeddedResource Include="Data\20191117_085933_6304.jpg" />
-    <EmbeddedResource Include="Data\20191118_092807_4133.jpg" />
-    <EmbeddedResource Include="Data\DSC05338.ARW" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Data\Unbelievable.mp4">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Data\TheMan.FLAC">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
-    <PackageReference Include="TagLibSharp" Version="2.2.0" />
-    <PackageReference Include="z440.atl.core" Version="4.8.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Data\20191114.kml" />
+		<EmbeddedResource Include="Data\20191117_085933_6304.jpg" />
+		<EmbeddedResource Include="Data\20191118_092807_4133.jpg" />
+		<EmbeddedResource Include="Data\DSC05338.ARW" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Library\ExifLibrary\ExifLibrary\ExifLibrary.csproj" />
-    <ProjectReference Include="..\Library\MetadataExtractor\MetadataExtractor.Resources\MetadataExtractor.Resources.csproj" />
-    <ProjectReference Include="..\Library\MetadataExtractor\MetadataExtractor\MetadataExtractor.csproj" />
-    <ProjectReference Include="..\Library\SharpKml\SharpKml.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+		<PackageReference Include="TagLibSharp" Version="2.3.0" />
+		<PackageReference Include="z440.atl.core" Version="4.9.0" />
+	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\MagicFile.Packages\MagicFile.Packages.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+		<PackageReference Include="NUnit" Version="3.13.3" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
+		<PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
+		<PackageReference Include="coverlet.collector" Version="3.1.2" />
+	</ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>MagicFile common class library.</Description>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <!--<TargetFrameworks>netstandard2.0;netstandard3.0;net45</TargetFrameworks>-->
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Charles Zhang</Authors>
