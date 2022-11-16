@@ -13,6 +13,7 @@ using MetadataExtractor.Formats.Exif;
 using System.Text.RegularExpressions;
 using ATL.CatalogDataReaders.BinaryLogic;
 using ATL.CatalogDataReaders;
+using Microsoft.International.Converters.TraditionalChineseToSimplifiedConverter;
 
 namespace MagicFile
 {
@@ -120,8 +121,9 @@ namespace MagicFile
 
         static void Main(string[] args)
         {
-
-
+            var sourceDir = @"F:\Music";
+            var destDir = @"F:\Album";
+            // AudioTrim.Trim(sourceDir, destDir);
             //Cue cue = new Cue(@"E:\Music\李翊君2006-天荒地老的情歌[喜玛拉雅]{WAV]\李翊君.-.[天荒地老的情歌](2006)[WAV].cue");
 
 
@@ -161,8 +163,36 @@ namespace MagicFile
                 else if (command == "3")
                 {
 
+                    Console.WriteLine("请输入一个路径：");
+                    string path = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        Console.WriteLine("正在执行中......");
+                        MusicOrganize.Organize(path, OrganizeMode.ByArtist);
+                        Console.WriteLine("执行结束");
+                    }
+
                 }
                 else if (command == "4")
+                {
+                    Console.WriteLine("正在执行中......");
+                    string path = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        Console.WriteLine("请输入一个路径：");
+                        MusicOrganize.Organize(path, OrganizeMode.ByAlbum);
+                        Console.WriteLine("执行结束");
+                    }
+                }
+                else if (command == "5")
+                {
+
+                }
+                else if (command == "6")
+                {
+                    OrganizeMedia();
+                }
+                else if (command == "7")
                 {
                     OrganizeMedia();
                 }
@@ -199,10 +229,151 @@ namespace MagicFile
             Console.WriteLine("------------------------- MagicFile Console v1.0.0 -------------------------");
             Console.WriteLine("1、根据歌手整理音乐文件信息");
             Console.WriteLine("2、根据专辑整理音乐文件信息");
-            Console.WriteLine("3、整理视频文件信息");
-            Console.WriteLine("4、自动根据元数据整理文件");
+            Console.WriteLine("3、根据歌手整理音乐文件信息（繁体字转换简体字）");
+            Console.WriteLine("4、根据专辑整理音乐文件信息（繁体字转换简体字）");
+            Console.WriteLine("5、整理视频文件信息");
+            Console.WriteLine("6、自动根据元数据整理文件");
+            Console.WriteLine("7、延时照片整理");
             Console.WriteLine("q、退出");
             Console.WriteLine("----------------------------------------------------------------------------");
+        }
+
+        private static void OrganizeHyperlapse()
+        {
+            Console.WriteLine("请输入一个路径：");
+            string path = Console.ReadLine();
+            if (!string.IsNullOrEmpty(path))
+            {
+                OrganizeHyperlapse(path);
+            }
+        }
+
+        private static void OrganizeHyperlapse(string path)
+        {
+
+            DirectoryInfo directoryInfo = new(path);
+
+            var files = directoryInfo.GetFiles();
+
+
+            foreach (var file in files)
+            {
+                Regex regex = new(@"(\d{8})_(\d{6})_(\d{4})");
+                if (regex.IsMatch(file.Name))
+                {
+                    continue;
+                }
+
+                if (file.Extension.ToLower().Equals(".db"))
+                {
+                    continue;
+                }
+                var destFileName = string.Empty;
+                if (file.Extension.ToLower().Equals(".dng"))
+                {
+                    var directories = ImageMetadataReader.ReadMetadata(file.FullName);
+                    var headerDirectory = directories?.FirstOrDefault(d => d.Name == "Exif IFD0");
+                    var tags = headerDirectory.Tags;
+                    DateTime? datetime = null;
+                    if (headerDirectory.ContainsTag(ExifDirectoryBase.TagDateTime))
+                    {
+                        datetime = headerDirectory.GetDateTime(ExifDirectoryBase.TagDateTime);
+                    }
+                    if (headerDirectory.ContainsTag(ExifDirectoryBase.TagDateTimeDigitized))
+                    {
+                        datetime = headerDirectory.GetDateTime(ExifDirectoryBase.TagDateTimeDigitized);
+                    }
+                    if (headerDirectory.ContainsTag(ExifDirectoryBase.TagDateTimeOriginal))
+                    {
+                        datetime = headerDirectory.GetDateTime(ExifDirectoryBase.TagDateTimeOriginal);
+                    }
+                    var filename = string.Empty;
+
+                    filename = datetime?.ToString("yyyyMMdd_HHmmss_ffff");
+
+                    destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                    if (File.Exists(destFileName))
+                    {
+                        filename = filename.Substring(0, 16) + new Random().Next(1000, 9999);
+                        destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                    }
+                }
+                else if (file.Extension.ToLower().Equals(".arw"))
+                {
+                    var directories = ImageMetadataReader.ReadMetadata(file.FullName);
+                    var headerDirectory = directories?.FirstOrDefault(d => d.Name == "Exif IFD0");
+                    var tags = headerDirectory.Tags;
+                    DateTime? datetime = null;
+                    if (headerDirectory.ContainsTag(ExifDirectoryBase.TagDateTime))
+                    {
+                        datetime = headerDirectory.GetDateTime(ExifDirectoryBase.TagDateTime);
+                    }
+                    if (headerDirectory.ContainsTag(ExifDirectoryBase.TagDateTimeDigitized))
+                    {
+                        datetime = headerDirectory.GetDateTime(ExifDirectoryBase.TagDateTimeDigitized);
+                    }
+                    if (headerDirectory.ContainsTag(ExifDirectoryBase.TagDateTimeOriginal))
+                    {
+                        datetime = headerDirectory.GetDateTime(ExifDirectoryBase.TagDateTimeOriginal);
+                    }
+                    var filename = string.Empty;
+
+                    filename = datetime?.ToString("yyyyMMdd_HHmmss_ffff");
+
+                    destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                    if (File.Exists(destFileName))
+                    {
+                        filename = filename.Substring(0, 16) + new Random().Next(1000, 9999);
+                        destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                    }
+                }
+                else
+                {
+                    var mediaFile = TagLib.File.Create(file.FullName);
+
+                    var fileTag = mediaFile.Tag;
+
+                    if (fileTag is TagLib.Image.ImageTag)
+                    {
+                        destFileName = RenamePhoto(file, mediaFile);
+                    }
+                    else if (fileTag.TagTypes is TagLib.TagTypes.Apple)
+                    {
+                        destFileName = RenameVideo(file, mediaFile);
+                    }
+                    else
+                    {
+                        var properties = mediaFile.Properties;
+
+                        var mediaTypes = properties.MediaTypes;
+
+                        switch (mediaTypes)
+                        {
+                            case TagLib.MediaTypes.None:
+                                break;
+                            case TagLib.MediaTypes.Audio:
+                                destFileName = RenameAudio(file, mediaFile);
+                                break;
+                            case TagLib.MediaTypes.Video:
+                                destFileName = RenameVideo(file, mediaFile);
+                                break;
+                            case TagLib.MediaTypes.Video | TagLib.MediaTypes.Audio:
+                                destFileName = RenameVideo(file, mediaFile);
+                                break;
+                            case TagLib.MediaTypes.Photo:
+                                destFileName = RenamePhoto(file, mediaFile);
+                                break;
+                            case TagLib.MediaTypes.Text:
+                                destFileName = RenameText(file, mediaFile);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                file.MoveTo(destFileName);
+            }
+            Console.WriteLine("整理完毕！");
         }
 
         private static void OrganizeMedia()
@@ -213,7 +384,6 @@ namespace MagicFile
             {
                 OrganizeMedia(path);
             }
-
         }
 
         private static void OrganizeMedia(string path)

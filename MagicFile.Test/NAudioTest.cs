@@ -52,7 +52,7 @@ namespace MagicFile.Test
                 Track currentTrack = tracks[i];
                 string nowTime = Util.GetTimeStamp();//当前时间戳
                 //切割后保存的文件绝对地址
-                var outputPath = System.IO.Path.Combine(fileInfo?.Directory?.FullName, string.Format("{0} - {1}{2}", currentTrack.Artist, currentTrack.Title, fileInfo.Extension));
+                var outputPath = Path.Combine(fileInfo?.Directory?.FullName, GetFileName(currentTrack.Title, currentTrack.Album, currentTrack.Artist, fileInfo.Extension));
                 //切割的开始时间
                 TimeSpan cutFromStart = TimeSpan.FromSeconds(currentTimeSpan);
                 //切割的结束时间
@@ -61,14 +61,42 @@ namespace MagicFile.Test
                 WavFileUtils.TrimWavFile(filePath, outputPath, cutFromStart, cutFromEnd);
                 currentTimeSpan = currentTimeSpan + currentTrack.Duration;
 
-                Track theTrack = new(outputPath);
-                theTrack.Title = currentTrack.Title;
-                theTrack.Album = currentTrack.Album;
-                theTrack.Artist = currentTrack.Artist;
-                theTrack.Save();
+
                 i++;
             }
-            Assert.Pass();
+            //Assert.Pass();
+        }
+
+
+        public string GetFileName(string title, string artist, string album, string extension)
+        {
+            if (title.Contains("-"))
+            {
+                artist = title.Substring(0, title.IndexOf("-"));
+                title = title.Substring(title.IndexOf("-") + 1);
+                return string.Format("{0} - {1}{2}", artist, title, extension);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(artist))
+                {
+                    return string.Format("{0} - {1}{2}", artist, title, extension);
+                }
+                else
+                {
+                    return string.Format("{0}{1}", title, extension);
+                }
+            }
+        }
+
+        public void SetTag(string title, string artist, string album, string filePath, Track tagTrack)
+        {
+
+            Track theTrack = new(filePath);
+            theTrack.Title = tagTrack.Title;
+            theTrack.Album = tagTrack.Album;
+            theTrack.Artist = tagTrack.Artist;
+            theTrack.Save();
         }
     }
 }
