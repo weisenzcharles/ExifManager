@@ -34,7 +34,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Baidu.AI" Version="4.15.12" />
 		<PackageReference Include="NAudio" Version="2.1.0" />
 		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
 		<PackageReference Include="TagLibSharp" Version="2.3.0" />

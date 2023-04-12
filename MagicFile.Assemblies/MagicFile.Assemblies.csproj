@@ -14,7 +14,6 @@
 		<PackageReference Include="CHTCHSConv" Version="1.0.0" />
 		<PackageReference Include="IdSharp.Common" Version="1.0.1" />
 		<PackageReference Include="NAudio" Version="2.1.0" />
-		<PackageReference Include="Spire.OCR" Version="1.8.0" />
 		<PackageReference Include="XmpCore" Version="6.1.10.1" />
 		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
 		<PackageReference Include="TagLibSharp" Version="2.3.0" />
