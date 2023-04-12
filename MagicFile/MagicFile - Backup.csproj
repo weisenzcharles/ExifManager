@@ -284,7 +284,7 @@
     <Resource Include="Resources\ProgramIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.2" />
     <PackageReference Include="TagLibSharp" Version="2.2.0" />
   </ItemGroup>
 
