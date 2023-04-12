@@ -49,6 +49,17 @@ namespace MagicFile
         }
 
         /// <summary>
+        /// 获取艺术家名称。
+        /// </summary>
+        /// <param name="atrist"></param>
+        /// <returns></returns>
+        public static List<string> GetArtists(string atrist)
+        {
+            char[] separator = new char[] { ',', ';', '&', '/', '、', '，' };
+            return atrist.Split(separator).ToList();
+        }
+
+        /// <summary>
         /// 整理文件。
         /// </summary>
         public static void Organize(string path, OrganizeMode mode)
@@ -78,69 +89,73 @@ namespace MagicFile
                     Track theTrack = new(file);
                     if (theTrack != null && !string.IsNullOrEmpty(theTrack.Title))
                     {
-                        // 艺术家路径
-                        string artistPath = string.Format(@"{0}\{1}", outputDirectory, theTrack.Artist.Trim());
-                        // 专辑路径
-                        string albumPath = string.Empty;
-                        albumPath = mode switch
+                        // 处理艺术家
+                        var artists = GetArtists(theTrack.Artist.Trim());
+                        foreach (var atrist in artists)
                         {
-                            OrganizeMode.ByArtist => string.Format(@"{0}\{1}\{2}", outputDirectory, theTrack.Artist.Trim(), RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim()))),
-                            OrganizeMode.ByAlbum => string.Format(@"{0}\{1}", outputDirectory, RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim()))),
-                            _ => string.Format(@"{0}\{1}\{2}", outputDirectory, theTrack.Artist.Trim(), RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim()))),
-                        };
-                        string fileName = Path.GetFileNameWithoutExtension(file);
-                        if (fileName.Split('-').Length > 1)
-                        {
-                            string songArtist = fileName.Split('-')[0].Trim();
-                            string songTitle = ReplaceFormat(fileName.Split('-')[1].Trim());
-                            var artists = songArtist.Replace(",", "、").Replace("&", "、").Split('、');
-                            if (artists.Length > 1)
+                            // 艺术家路径
+                            string artistPath = string.Format(@"{0}\{1}", outputDirectory, atrist);
+                            // 专辑路径
+                            string albumPath = string.Empty;
+                            albumPath = mode switch
                             {
-                                //albumPath = string.Format(@"{0}\{1}\{2}", outputDirectory, artists[0].Trim(), RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim())));
-                                foreach (var artist in artists)
+                                OrganizeMode.ByArtist => string.Format(@"{0}\{1}\{2}", outputDirectory, atrist, RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim()))),
+                                OrganizeMode.ByAlbum => string.Format(@"{0}\{1}", outputDirectory, RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim()))),
+                                _ => string.Format(@"{0}\{1}\{2}", outputDirectory, atrist, RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim()))),
+                            };
+                            string fileName = Path.GetFileNameWithoutExtension(file);
+                            if (fileName.Split('-').Length > 1)
+                            {
+                                string songArtist = fileName.Split('-')[0].Trim();
+                                string songTitle = ReplaceFormat(fileName.Split('-')[1].Trim());
+                                //var artists = songArtist.Replace(",", "、").Replace("&", "、").Split('、');
+                                if (artists.Count > 1)
                                 {
-                                    theTrack.Title = ReplaceFormat(theTrack.Title.Trim());
-                                    theTrack.Album = ReplaceFormat(theTrack.Album.Trim());
-                                    theTrack.Artist = artist.Trim();
-                                    theTrack.Save();
+                                    //albumPath = string.Format(@"{0}\{1}\{2}", outputDirectory, artists[0].Trim(), RemoveInvaildSymbol(ReplaceFormat(theTrack.Album.Trim())));
+                                    foreach (var artist in artists)
+                                    {
+                                        theTrack.Title = ReplaceFormat(theTrack.Title.Trim());
+                                        theTrack.Album = ReplaceFormat(theTrack.Album.Trim());
+                                        theTrack.Artist = artist.Trim();
+                                        theTrack.Save();
+                                        if (!Directory.Exists(albumPath))
+                                        {
+                                            Directory.CreateDirectory(albumPath);
+                                        }
+                                        var destFileName = string.Format("{0}\\{1} - {2}{3}", albumPath, artist.Trim(), songTitle, Path.GetExtension(file).ToLower());
+                                        Console.WriteLine("New Loaction : " + destFileName);
+                                        CopyFile(file, destFileName);
+                                        if (existedLrc)
+                                        {
+                                            var destLrcName = string.Format("{0}\\{1} - {2}{3}", albumPath, artist.Trim(), songTitle, ".lrc");
+                                            Console.WriteLine("New Lrc Loaction : " + destLrcName);
+                                            CopyFile(lrcFile, destLrcName);
+                                        }
+                                    }
+                                }
+                                else
+                                {
                                     if (!Directory.Exists(albumPath))
                                     {
                                         Directory.CreateDirectory(albumPath);
                                     }
-                                    var destFileName = string.Format("{0}\\{1} - {2}{3}", albumPath, artist.Trim(), songTitle, Path.GetExtension(file).ToLower());
+                                    theTrack.Title = ReplaceFormat(theTrack.Title.Trim());
+                                    theTrack.Album = ReplaceFormat(theTrack.Album.Trim());
+                                    //theTrack.Artist = ReplaceFormat(theTrack.Artist);
+                                    theTrack.Save();
+
+                                    var destFileName = string.Format("{0}\\{1} - {2}{3}", albumPath, songArtist, songTitle, Path.GetExtension(file).ToLower());
                                     Console.WriteLine("New Loaction : " + destFileName);
                                     CopyFile(file, destFileName);
                                     if (existedLrc)
                                     {
-                                        var destLrcName = string.Format("{0}\\{1} - {2}{3}", albumPath, artist.Trim(), songTitle, ".lrc");
+                                        var destLrcName = string.Format("{0}\\{1} - {2}{3}{4}", albumPath, songArtist, songTitle, songTitle, ".lrc");
                                         Console.WriteLine("New Lrc Loaction : " + destLrcName);
                                         CopyFile(lrcFile, destLrcName);
                                     }
                                 }
                             }
-                            else
-                            {
-                                if (!Directory.Exists(albumPath))
-                                {
-                                    Directory.CreateDirectory(albumPath);
-                                }
-                                theTrack.Title = ReplaceFormat(theTrack.Title.Trim());
-                                theTrack.Album = ReplaceFormat(theTrack.Album.Trim());
-                                //theTrack.Artist = ReplaceFormat(theTrack.Artist);
-                                theTrack.Save();
-
-                                var destFileName = string.Format("{0}\\{1} - {2}{3}", albumPath, songArtist, songTitle, Path.GetExtension(file).ToLower());
-                                Console.WriteLine("New Loaction : " + destFileName);
-                                CopyFile(file, destFileName);
-                                if (existedLrc)
-                                {
-                                    var destLrcName = string.Format("{0}\\{1} - {2}{3}{4}", albumPath, songArtist, songTitle, songTitle, ".lrc");
-                                    Console.WriteLine("New Lrc Loaction : " + destLrcName);
-                                    CopyFile(lrcFile, destLrcName);
-                                }
-                            }
                         }
-
                     }
 
                     string newFileName = string.Format("{0}\\{1}{2}", backupPath, Path.GetFileNameWithoutExtension(file), Path.GetExtension(file).ToLower());

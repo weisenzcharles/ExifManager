@@ -9,18 +9,13 @@
 		<Copyright>Copyright © 2018-2019 Weisenz Team. All Rights Reserved</Copyright>
 		<ApplicationIcon />
 		<StartupObject />
-		<Platforms>AnyCPU;ARM64</Platforms>
+
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NAudio" Version="2.1.0" />
-		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
-		<PackageReference Include="TagLibSharp" Version="2.3.0" />
-		<PackageReference Include="z440.atl.core" Version="4.9.0" />
-	</ItemGroup>
-	<ItemGroup>
+
 		<ProjectReference Include="..\Library\MetadataExtractor\MetadataExtractor\MetadataExtractor.csproj" />
-		<ProjectReference Include="..\Library\SharpKml\SharpKml.Core.csproj" />
-		<ProjectReference Include="..\MagicFile.Packages\MagicFile.Packages.csproj" />
+
+		<ProjectReference Include="..\MagicFile.Assemblies\MagicFile.Assemblies.csproj" />
 	</ItemGroup>
 </Project>

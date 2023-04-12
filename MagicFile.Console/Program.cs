@@ -121,8 +121,8 @@ namespace MagicFile
 
         static void Main(string[] args)
         {
-            var sourceDir = @"F:\Music";
-            var destDir = @"F:\Album";
+            // var sourceDir = @"F:\Music";
+            // var destDir = @"F:\Album";
             // AudioTrim.Trim(sourceDir, destDir);
             //Cue cue = new Cue(@"E:\Music\李翊君2006-天荒地老的情歌[喜玛拉雅]{WAV]\李翊君.-.[天荒地老的情歌](2006)[WAV].cue");
 
