@@ -14,7 +14,7 @@
 
 	<ItemGroup>
 
-		<ProjectReference Include="..\Library\MetadataExtractor\MetadataExtractor\MetadataExtractor.csproj" />
+		<!--<ProjectReference Include="..\Library\MetadataExtractor\MetadataExtractor\MetadataExtractor.csproj" />-->
 
 		<ProjectReference Include="..\MagicFile.Assemblies\MagicFile.Assemblies.csproj" />
 	</ItemGroup>

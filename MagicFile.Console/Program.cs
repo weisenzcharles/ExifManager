@@ -14,6 +14,9 @@ using System.Text.RegularExpressions;
 using ATL.CatalogDataReaders.BinaryLogic;
 using ATL.CatalogDataReaders;
 using Microsoft.International.Converters.TraditionalChineseToSimplifiedConverter;
+using System.Diagnostics;
+using Newtonsoft.Json;
+using MetadataExtractor.Formats.FileSystem;
 
 namespace MagicFile
 {
@@ -81,7 +84,12 @@ namespace MagicFile
         public static string RenamePhoto(FileInfo fileInfo, TagLib.File mediaFile)
         {
             var imgesTag = mediaFile.Tag as TagLib.Image.ImageTag;
-            string suffix = fileInfo.Name.Replace(fileInfo.Extension, "").Substring(fileInfo.Name.Replace(fileInfo.Extension, "").Length - 4);
+            string suffix = string.Empty;
+            if (fileInfo.Name.Replace(fileInfo.Extension, "").Length > 4)
+            {
+                suffix = fileInfo.Name.Replace(fileInfo.Extension, "").Substring(fileInfo.Name.Replace(fileInfo.Extension, "").Length - 4);
+            }
+
             Regex regex = new Regex(@"(\d{4})");
             if (!regex.IsMatch(suffix))
             {
@@ -196,6 +204,10 @@ namespace MagicFile
                 {
                     OrganizeMedia();
                 }
+                else if (command == "8")
+                {
+                    OrganizeMediaInfo();
+                }
                 else if (command == "q")
                 {
                     Environment.Exit(0);
@@ -234,6 +246,7 @@ namespace MagicFile
             Console.WriteLine("5、整理视频文件信息");
             Console.WriteLine("6、自动根据元数据整理文件");
             Console.WriteLine("7、延时照片整理");
+            Console.WriteLine("8、生成高清影片命名");
             Console.WriteLine("q、退出");
             Console.WriteLine("----------------------------------------------------------------------------");
         }
@@ -385,6 +398,53 @@ namespace MagicFile
                 OrganizeMedia(path);
             }
         }
+        private static void OrganizeMediaInfo()
+        {
+            Console.WriteLine("请输入一个路径：");
+            string path = Console.ReadLine();
+            if (!string.IsNullOrEmpty(path))
+            {
+                OrganizeMediaInfo(path);
+            }
+        }
+
+        private static void OrganizeMediaInfo(string filePath)
+        {
+            // 要读取信息的视频文件路径
+            //string filePath = "C:/Movies/Example.mp4";
+            // 创建一个新的进程来运行 MediaInfo 命令行工具
+            Process process = new Process();
+            process.StartInfo.FileName = "E:\\Source\\MagicFile\\MagicFile.Console\\bin\\Debug\\net6.0\\MediaInfo\\MediaInfo.exe"; // MediaInfo 命令行工具的路径
+            process.StartInfo.Arguments = " --Output=JSON \"" + filePath + "\""; // 要获取的信息类型和文件路径
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+
+            // 启动进程并等待它完成
+            process.Start();
+            process.WaitForExit();
+
+            // 从输出中解析有关视频文件的信息
+            string output = process.StandardOutput.ReadToEnd();
+            dynamic json = JsonConvert.DeserializeObject(output);
+            string format = json.media.track[0].Format;
+            int width = json.media.track[1].Width;
+            int height = json.media.track[1].Height;
+            string videoCodec = json.media.track[1].Format;
+            string audioCodec = json.media.track[2].Format;
+            int channels = json.media.track[2].Channels;
+            int year = json.media.track[0].Encoded_Date.Year;
+
+            // 获取文件名和扩展名
+            string fileName = System.IO.Path.GetFileNameWithoutExtension(filePath);
+            string extension = System.IO.Path.GetExtension(filePath);
+
+            // 根据文件信息生成电影文件名
+            string movieName = string.Format("{0}.{1}.{2}.{3}.{4}p.{5}.{6}.{7}-{8}",
+                fileName, year, format, extension.Substring(1), height, videoCodec, audioCodec, channels, "制作组名称");
+
+            // 输出生成的电影文件名
+            Console.WriteLine(movieName);
+        }
 
         private static void OrganizeMedia(string path)
         {
@@ -402,7 +462,7 @@ namespace MagicFile
                     continue;
                 }
 
-                if (file.Extension.ToLower().Equals(".db"))
+                if (file.Extension.ToLower().Equals(".db") || file.Extension.ToLower().Equals(".DS_Store"))
                 {
                     continue;
                 }
@@ -411,22 +471,34 @@ namespace MagicFile
                 {
                     var directories = ImageMetadataReader.ReadMetadata(file.FullName);
 
-                    var headerDirectory = directories.Where(d => d.Name == "QuickTime Movie Header").FirstOrDefault();
-                    var tags = headerDirectory.Tags;
-
-                    var dateTime = headerDirectory?.GetDescription(QuickTimeMovieHeaderDirectory.TagCreated);
-
-                    var created = headerDirectory.GetDateTime(QuickTimeMovieHeaderDirectory.TagCreated);
-                    var modified = headerDirectory.GetDateTime(QuickTimeMovieHeaderDirectory.TagModified);
-
                     var filename = string.Empty;
-                    if (created >= modified)
+
+                    var headerDirectory = directories.Where(d => d.Name == "QuickTime Movie Header").FirstOrDefault();
+
+                    if (headerDirectory != null)
                     {
-                        filename = modified.ToString("yyyyMMdd_HHmmss_ffff");
+
+                        var tags = headerDirectory.Tags;
+
+                        var dateTime = headerDirectory?.GetDescription(QuickTimeMovieHeaderDirectory.TagCreated);
+
+                        var created = headerDirectory.GetDateTime(QuickTimeMovieHeaderDirectory.TagCreated);
+                        var modified = headerDirectory.GetDateTime(QuickTimeMovieHeaderDirectory.TagModified);
+
+                        if (created >= modified)
+                        {
+                            filename = modified.ToString("yyyyMMdd_HHmmss_ffff");
+                        }
+                        else
+                        {
+                            filename = created.ToString("yyyyMMdd_HHmmss_ffff");
+                        }
                     }
                     else
                     {
-                        filename = created.ToString("yyyyMMdd_HHmmss_ffff");
+                        headerDirectory = directories.Where(d => d.Name == "File").FirstOrDefault();
+                        var modified = headerDirectory.GetDateTime(FileMetadataDirectory.TagFileModifiedDate);
+                        filename = modified.ToString("yyyyMMdd_HHmmss_ffff");
                     }
                     destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
                     if (File.Exists(destFileName))
