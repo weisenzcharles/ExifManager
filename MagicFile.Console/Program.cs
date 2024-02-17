@@ -17,6 +17,7 @@ using Microsoft.International.Converters.TraditionalChineseToSimplifiedConverter
 using System.Diagnostics;
 using Newtonsoft.Json;
 using MetadataExtractor.Formats.FileSystem;
+using System.Drawing;
 
 namespace MagicFile
 {
@@ -30,7 +31,12 @@ namespace MagicFile
 
         private static string GetTimeName(FileInfo fileInfo)
         {
-            string suffix = fileInfo.Name.Replace(fileInfo.Extension, "").Substring(fileInfo.Name.Replace(fileInfo.Extension, "").Length - 4);
+            string suffix = String.Empty;
+            if (fileInfo.Name.Replace(fileInfo.Extension, "").Length > 4)
+            {
+                suffix = fileInfo.Name.Replace(fileInfo.Extension, "").Substring(fileInfo.Name.Replace(fileInfo.Extension, "").Length - 4);
+            }
+  
             Regex regex = new Regex(@"(\d{4})");
             if (!regex.IsMatch(suffix))
             {
@@ -114,7 +120,7 @@ namespace MagicFile
         }
 
 
-        /// <summary>
+        /// <summary> 
         /// 更名文本。
         /// </summary>
         /// <param name="fileInfo"></param>
@@ -194,7 +200,7 @@ namespace MagicFile
                 }
                 else if (command == "5")
                 {
-
+                    OrganizeDirectory();
                 }
                 else if (command == "6")
                 {
@@ -205,6 +211,10 @@ namespace MagicFile
                     OrganizeMedia();
                 }
                 else if (command == "8")
+                {
+                    OrganizeMediaInfo();
+                }
+                else if (command == "9")
                 {
                     OrganizeMediaInfo();
                 }
@@ -232,6 +242,8 @@ namespace MagicFile
             }
         }
 
+
+
         /// <summary>
         /// 打印菜单。
         /// </summary>
@@ -243,10 +255,12 @@ namespace MagicFile
             Console.WriteLine("2、根据专辑整理音乐文件信息");
             Console.WriteLine("3、根据歌手整理音乐文件信息（繁体字转换简体字）");
             Console.WriteLine("4、根据专辑整理音乐文件信息（繁体字转换简体字）");
-            Console.WriteLine("5、整理视频文件信息");
+            //Console.WriteLine("5、整理视频文件信息");
+            Console.WriteLine("5、整理 Mac Photo 文件夹");
             Console.WriteLine("6、自动根据元数据整理文件");
             Console.WriteLine("7、延时照片整理");
             Console.WriteLine("8、生成高清影片命名");
+            Console.WriteLine("9、图片生成高清影片");
             Console.WriteLine("q、退出");
             Console.WriteLine("----------------------------------------------------------------------------");
         }
@@ -408,6 +422,19 @@ namespace MagicFile
             }
         }
 
+        /// <summary>
+        /// 整理相册目录。
+        /// </summary>
+        private static void OrganizeDirectory()
+        {
+            Console.WriteLine("请输入一个路径：");
+            string path = Console.ReadLine();
+            if (!string.IsNullOrEmpty(path))
+            {
+                OrganizeDirectory(path);
+            }
+        }
+
         private static void OrganizeMediaInfo(string filePath)
         {
             // 要读取信息的视频文件路径
@@ -432,7 +459,7 @@ namespace MagicFile
             string videoCodec = json.media.track[1].Format;
             string audioCodec = json.media.track[2].Format;
             int channels = json.media.track[2].Channels;
-            int year = json.media.track[0].Encoded_Date.Year;
+            int? year = json.media.track[0]?.Encoded_Date?.Year;
 
             // 获取文件名和扩展名
             string fileName = System.IO.Path.GetFileNameWithoutExtension(filePath);
@@ -446,170 +473,271 @@ namespace MagicFile
             Console.WriteLine(movieName);
         }
 
-        private static void OrganizeMedia(string path)
+        /// <summary>
+        /// 整理相册目录。
+        /// </summary>
+        /// <param name="path"></param>
+        private static void OrganizeDirectory(string path)
         {
-
             DirectoryInfo directoryInfo = new(path);
 
-            var files = directoryInfo.GetFiles();
+            var directories = directoryInfo.GetDirectories();
 
-
-            foreach (var file in files)
+            // 遍历目录
+            foreach (var directory in directories)
             {
-                Regex regex = new(@"(\d{8})_(\d{6})_(\d{4})");
-                if (regex.IsMatch(file.Name))
+                string pattern = @"^\d{4}-\d{2}-\d{2}\s.+$";
+                Regex regex = new(pattern);
+                if (regex.IsMatch(directory.Name))
                 {
                     continue;
                 }
 
-                if (file.Extension.ToLower().Equals(".db") || file.Extension.ToLower().Equals(".DS_Store"))
+                // 定义正则表达式
+                string patternDate = @"^(.+?),\s(\d{4}年\d{1,2}月\d{1,2}日)$|^(\d{4}年\d{1,2}月\d{1,2}日)$";
+                //string patternDate = @"^.+,\s\d{4}年\d{1,2}月\d{1,2}日$";
+                //string patternDate = @"^(.+?),\s(\d{4}年\d{1,2}月\d{1,2}日)$|^(\d{4}年\d{1,2}月\d{1,2}日)$";
+
+                // 创建正则表达式对象
+                Regex regexDate = new Regex(patternDate);
+
+                // 进行匹配
+                Match match = regexDate.Match(directory.Name);
+
+                if (match.Success)
                 {
-                    continue;
-                }
-                var destFileName = string.Empty;
-                if (file.Extension.ToLower().Equals(".mov"))
-                {
-                    var directories = ImageMetadataReader.ReadMetadata(file.FullName);
-
-                    var filename = string.Empty;
-
-                    var headerDirectory = directories.Where(d => d.Name == "QuickTime Movie Header").FirstOrDefault();
-
-                    if (headerDirectory != null)
+                    string location = match.Groups[1].Value.Trim();
+                    string date = String.Empty;
+                    string newFolderName = String.Empty;
+                    if (String.IsNullOrEmpty(location))
                     {
-
-                        var tags = headerDirectory.Tags;
-
-                        var dateTime = headerDirectory?.GetDescription(QuickTimeMovieHeaderDirectory.TagCreated);
-
-                        var created = headerDirectory.GetDateTime(QuickTimeMovieHeaderDirectory.TagCreated);
-                        var modified = headerDirectory.GetDateTime(QuickTimeMovieHeaderDirectory.TagModified);
-
-                        if (created >= modified)
-                        {
-                            filename = modified.ToString("yyyyMMdd_HHmmss_ffff");
-                        }
-                        else
-                        {
-                            filename = created.ToString("yyyyMMdd_HHmmss_ffff");
-                        }
+                        date = match.Groups[0].Value.Trim();
                     }
                     else
                     {
-                        headerDirectory = directories.Where(d => d.Name == "File").FirstOrDefault();
-                        var modified = headerDirectory.GetDateTime(FileMetadataDirectory.TagFileModifiedDate);
-                        filename = modified.ToString("yyyyMMdd_HHmmss_ffff");
-                    }
-                    destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
-                    if (File.Exists(destFileName))
-                    {
-                        filename = filename.Substring(0, 16) + new Random().Next(1000, 9999);
-                        destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                        date = match.Groups[2].Value.Trim();
                     }
 
-                }
-                else if (file.Extension.ToLower().Equals(".heic"))
-                {
-                    var directories = ImageMetadataReader.ReadMetadata(file.FullName);
+                    // 将中文日期字符串转换成 DateTime 对象
+                    DateTime dateTime = DateTime.ParseExact(date, "yyyy年M月d日", null);
 
-                    var fileDirectory = directories.Where(d => d.Name == "File").FirstOrDefault();
-                    var tags = fileDirectory.Tags;
+                    // 将 DateTime 对象转换成 "yyyy-MM-dd" 格式的字符串
+                    string formattedDate = dateTime.ToString("yyyy-MM-dd");
 
-                    var dateTime = fileDirectory?.GetDateTime(QuickTimeMovieHeaderDirectory.TagCreated);
+                    //Console.WriteLine($"原始日期：{date}");
+                    //Console.WriteLine($"转换后日期：{formattedDate}");
+                    //Console.WriteLine($"匹配成功！\n地点：{location}\n日期：{date}");
 
-                    var created = fileDirectory?.GetDateTime(QuickTimeMovieHeaderDirectory.TagCreated);
-                    var modified = fileDirectory.ContainsTag(QuickTimeMovieHeaderDirectory.TagModified) ? fileDirectory?.GetDateTime(QuickTimeMovieHeaderDirectory.TagModified) : dateTime;
-
-                    var filename = string.Empty;
-                    if (created >= modified)
+                    // 构建新的文件夹名字
+                    if (String.IsNullOrEmpty(location))
                     {
-                        filename = modified?.ToString("yyyyMMdd_HHmmss_ffff");
+                        newFolderName = $"{formattedDate}";
                     }
                     else
                     {
-                        filename = created?.ToString("yyyyMMdd_HHmmss_ffff");
+                        newFolderName = $"{formattedDate} {location}";
                     }
-                    destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
-                    if (File.Exists(destFileName))
-                    {
-                        filename = filename.Substring(0, 16) + new Random().Next(1000, 9999);
-                        destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
-                    }
-                }
-                else if (file.Extension.ToLower().Equals(".dng"))
-                {
-                    var directories = ImageMetadataReader.ReadMetadata(file.FullName);
-                    var headerDirectory = directories?.FirstOrDefault(d => d.Name == "Exif IFD0");
-                    var tags = headerDirectory.Tags;
-                    DateTime? datetime = null;
-                    if (headerDirectory.ContainsTag(ExifDirectoryBase.TagDateTime))
-                    {
-                        datetime = headerDirectory.GetDateTime(ExifDirectoryBase.TagDateTime);
-                    }
-                    if (headerDirectory.ContainsTag(ExifDirectoryBase.TagDateTimeDigitized))
-                    {
-                        datetime = headerDirectory.GetDateTime(ExifDirectoryBase.TagDateTimeDigitized);
-                    }
-                    if (headerDirectory.ContainsTag(ExifDirectoryBase.TagDateTimeOriginal))
-                    {
-                        datetime = headerDirectory.GetDateTime(ExifDirectoryBase.TagDateTimeOriginal);
-                    }
-                    var filename = string.Empty;
 
-                    filename = datetime?.ToString("yyyyMMdd_HHmmss_ffff");
+                    string newFolderPath = Path.Combine(Path.GetDirectoryName(directory.FullName), newFolderName);
 
-                    destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
-                    if (File.Exists(destFileName))
+                    // 检查新的文件夹路径是否存在，如果不存在则重命名
+                    if (!System.IO.Directory.Exists(newFolderPath))
                     {
-                        filename = filename.Substring(0, 16) + new Random().Next(1000, 9999);
-                        destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                        System.IO.Directory.Move(directory.FullName, newFolderPath);
+                        Console.WriteLine($"文件夹更名成功！新文件夹名称：{newFolderName}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("目标文件夹已存在，无法更名。");
                     }
                 }
                 else
                 {
-                    var mediaFile = TagLib.File.Create(file.FullName);
+                    Console.WriteLine("匹配失败！");
+                }
 
-                    var fileTag = mediaFile.Tag;
+                //Console.WriteLine(directory.Name);
+            }
+        }
 
-                    if (fileTag is TagLib.Image.ImageTag)
+        private static void OrganizeMedia(string path)
+        {
+
+            DirectoryInfo directoryInfo = new(path);
+            var directories = directoryInfo.GetDirectories();
+            // 遍历目录
+            foreach (var directory in directories)
+            {
+                var files = directory.GetFiles();
+
+                foreach (var file in files)
+                {
+                    Regex regex = new(@"(\d{8})_(\d{6})_(\d{4})$");
+                    if (regex.IsMatch(file.Name))
                     {
-                        destFileName = RenamePhoto(file, mediaFile);
+                        continue;
                     }
-                    else if (fileTag.TagTypes is TagLib.TagTypes.Apple)
+
+                    if (file.Extension.ToLower().Equals(".db") || file.Extension.ToLower().Equals(".DS_Store"))
                     {
-                        destFileName = RenameVideo(file, mediaFile);
+                        continue;
+                    }
+                    var destFileName = string.Empty;
+
+                    if (file.Extension.ToLower().Equals(".mov"))
+                    {
+                        var metaDirectories = ImageMetadataReader.ReadMetadata(file.FullName);
+
+                        var filename = string.Empty;
+
+                        var headerDirectory = metaDirectories.Where(d => d.Name == "QuickTime Movie Header").FirstOrDefault();
+
+                        if (headerDirectory != null)
+                        {
+
+                            var tags = headerDirectory.Tags;
+
+                            var dateTime = headerDirectory?.GetDescription(QuickTimeMovieHeaderDirectory.TagCreated);
+
+                            var created = headerDirectory.GetDateTime(QuickTimeMovieHeaderDirectory.TagCreated);
+                            var modified = headerDirectory.GetDateTime(QuickTimeMovieHeaderDirectory.TagModified);
+
+                            if (created >= modified)
+                            {
+                                filename = modified.ToString("yyyyMMdd_HHmmss_ffff");
+                            }
+                            else
+                            {
+                                filename = created.ToString("yyyyMMdd_HHmmss_ffff");
+                            }
+                        }
+                        else
+                        {
+                            headerDirectory = metaDirectories.Where(d => d.Name == "File").FirstOrDefault();
+                            var modified = headerDirectory.GetDateTime(FileMetadataDirectory.TagFileModifiedDate);
+                            filename = modified.ToString("yyyyMMdd_HHmmss_ffff");
+                        }
+                        destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                        if (File.Exists(destFileName))
+                        {
+                            filename = filename.Substring(0, 16) + new Random().Next(1000, 9999);
+                            destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                        }
+
+                    }
+                    else if (file.Extension.ToLower().Equals(".heic"))
+                    {
+                        var metaDirectories = ImageMetadataReader.ReadMetadata(file.FullName);
+
+                        var fileDirectory = metaDirectories.Where(d => d.Name == "File").FirstOrDefault();
+                        var tags = fileDirectory.Tags;
+
+                        var dateTime = fileDirectory?.GetDateTime(QuickTimeMovieHeaderDirectory.TagCreated);
+
+                        var created = fileDirectory?.GetDateTime(QuickTimeMovieHeaderDirectory.TagCreated);
+                        var modified = fileDirectory.ContainsTag(QuickTimeMovieHeaderDirectory.TagModified) ? fileDirectory?.GetDateTime(QuickTimeMovieHeaderDirectory.TagModified) : dateTime;
+
+                        var filename = string.Empty;
+                        if (created >= modified)
+                        {
+                            filename = modified?.ToString("yyyyMMdd_HHmmss_ffff");
+                        }
+                        else
+                        {
+                            filename = created?.ToString("yyyyMMdd_HHmmss_ffff");
+                        }
+                        destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                        if (File.Exists(destFileName))
+                        {
+                            filename = filename.Substring(0, 16) + new Random().Next(1000, 9999);
+                            destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                        }
+                    }
+                    else if (file.Extension.ToLower().Equals(".dng"))
+                    {
+                        var metaDirectories = ImageMetadataReader.ReadMetadata(file.FullName);
+                        var headerDirectory = metaDirectories?.FirstOrDefault(d => d.Name == "Exif IFD0");
+                        var tags = headerDirectory.Tags;
+                        DateTime? datetime = null;
+                        if (headerDirectory.ContainsTag(ExifDirectoryBase.TagDateTime))
+                        {
+                            datetime = headerDirectory.GetDateTime(ExifDirectoryBase.TagDateTime);
+                        }
+                        if (headerDirectory.ContainsTag(ExifDirectoryBase.TagDateTimeDigitized))
+                        {
+                            datetime = headerDirectory.GetDateTime(ExifDirectoryBase.TagDateTimeDigitized);
+                        }
+                        if (headerDirectory.ContainsTag(ExifDirectoryBase.TagDateTimeOriginal))
+                        {
+                            datetime = headerDirectory.GetDateTime(ExifDirectoryBase.TagDateTimeOriginal);
+                        }
+                        var filename = string.Empty;
+
+                        filename = datetime?.ToString("yyyyMMdd_HHmmss_ffff");
+
+                        destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                        if (File.Exists(destFileName))
+                        {
+                            filename = filename.Substring(0, 16) + new Random().Next(1000, 9999);
+                            destFileName = string.Format(@"{0}\{1}{2}", file.DirectoryName, filename, file.Extension);
+                        }
                     }
                     else
                     {
-                        var properties = mediaFile.Properties;
-
-                        var mediaTypes = properties.MediaTypes;
-
-                        switch (mediaTypes)
+                        try
                         {
-                            case TagLib.MediaTypes.None:
-                                break;
-                            case TagLib.MediaTypes.Audio:
-                                destFileName = RenameAudio(file, mediaFile);
-                                break;
-                            case TagLib.MediaTypes.Video:
-                                destFileName = RenameVideo(file, mediaFile);
-                                break;
-                            case TagLib.MediaTypes.Video | TagLib.MediaTypes.Audio:
-                                destFileName = RenameVideo(file, mediaFile);
-                                break;
-                            case TagLib.MediaTypes.Photo:
+                            var mediaFile = TagLib.File.Create(file.FullName);
+
+                            var fileTag = mediaFile.Tag;
+
+                            if (fileTag is TagLib.Image.ImageTag)
+                            {
                                 destFileName = RenamePhoto(file, mediaFile);
-                                break;
-                            case TagLib.MediaTypes.Text:
-                                destFileName = RenameText(file, mediaFile);
-                                break;
-                            default:
-                                break;
+                            }
+                            else if (fileTag.TagTypes is TagLib.TagTypes.Apple)
+                            {
+                                destFileName = RenameVideo(file, mediaFile);
+                            }
+                            else
+                            {
+                                var properties = mediaFile.Properties;
+
+                                var mediaTypes = properties.MediaTypes;
+
+                                switch (mediaTypes)
+                                {
+                                    case TagLib.MediaTypes.None:
+                                        destFileName = RenameText(file, mediaFile);
+                                        break;
+                                    case TagLib.MediaTypes.Audio:
+                                        destFileName = RenameAudio(file, mediaFile);
+                                        break;
+                                    case TagLib.MediaTypes.Video:
+                                        destFileName = RenameVideo(file, mediaFile);
+                                        break;
+                                    case TagLib.MediaTypes.Video | TagLib.MediaTypes.Audio:
+                                        destFileName = RenameVideo(file, mediaFile);
+                                        break;
+                                    case TagLib.MediaTypes.Photo:
+                                        destFileName = RenamePhoto(file, mediaFile);
+                                        break;
+                                    case TagLib.MediaTypes.Text:
+                                        destFileName = RenameText(file, mediaFile);
+                                        break;
+                                    default:
+                                        destFileName = RenameText(file, mediaFile);
+                                        break;
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            destFileName = GetTimeName(file);
+                            //throw;
                         }
                     }
+                    file.MoveTo(destFileName);
                 }
-                file.MoveTo(destFileName);
             }
             Console.WriteLine("整理完毕！");
         }
